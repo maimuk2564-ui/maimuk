@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SilkInsight - แพลตฟอร์มฐานข้อมูลด้านหม่อนไหม</title>
+    <title>SeriHub - แพลตฟอร์มบริหารจัดการและวิเคราะห์ข้อมูลหม่อนไหม</title>
     
     <!-- นำเข้าฟอนต์ Prompt จาก Google Fonts ให้เว็บดูเป็นมืออาชีพ -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -49,10 +49,10 @@
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
         .glass-card {
-            background: rgba(255, 255, 255, 0.75);
+            background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.8);
         }
         /* ลบ margin/padding พื้นฐานของ iframe ออกให้หมด */
         iframe {
@@ -72,10 +72,8 @@
 
         // ==========================================
         // 🌟 ตั้งค่า URL สำหรับเก็บ Log ผู้เข้าใช้งาน
-        // ให้นำลิงก์ Web App จาก Google Apps Script (ที่ทำในขั้นตอนที่ 1) มาวางแทนข้อความด้านล่างนี้
         // ==========================================
         const LOG_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxP4C_lcN2_uZ2iWBps0a6K22HY3XADVl8ADgvHr2cS9eNjBP9F2hgnr_8HHKmo-NxH-Q/exec';
-
 
         // --- เมนู Dashboards (เอาหน้าแรกรวมเข้าไปด้วยเพื่อให้เข้าถึงได้หลัง Login) ---
         const DASHBOARDS = [
@@ -92,8 +90,8 @@
                 url: 'https://script.google.com/macros/s/AKfycbwsWWq0K4O74RuQZ8P2Xc3q3Cy6aGd7MbYokmNti992AEuNG1PGfROjOWlGh5YVhtncKQ/exec'
             },
             { 
-                id: 'market', 
-                title: 'สถิติการซื้อขายรังไหม', 
+                id: 'production', 
+                title: 'ข้อมูลผลผลิตและรายได้รังไหม', 
                 icon: 'fas fa-chart-line', 
                 url: 'https://script.google.com/macros/s/AKfycbz29gzuWbCep-AmAhYfyJE93SLqBLn5uavWrm6uRnFiX3nfxK8dEVtkzank_t9mO9C7/exec'
             },
@@ -106,7 +104,7 @@
             { 
                 id: 'calc', 
                 title: 'โปรแกรมคำนวณการเก็บไข่ไหม', 
-                icon: 'fas fa-chart-bar', 
+                icon: 'fas fa-calculator', 
                 url: 'https://script.google.com/macros/s/AKfycby9I62m3ivrqnwPtE_zp6PCMxsFJKy6AMnfjznrN6cH9eoZS6uqZIYyaHt2edawqibx/exec'
             },
             { 
@@ -118,7 +116,7 @@
             { 
                 id: 'map', 
                 title: 'Sericulture Smart Map', 
-                icon: 'fas fa-map-marker-alt', 
+                icon: 'fas fa-map-marked-alt', 
                 url: 'https://script.google.com/macros/s/AKfycbyG5Dvx1X6XDYZBB-K4ohjVYEIks-Dx-1CzYEHpILnUlkr2Zqfv5Me5hSMX6XevlXZf/exec'
             }
         ];
@@ -159,7 +157,7 @@
                         style={{ backgroundImage: "url('./image_a3f815.jpg')" }}
                     ></div>
                     {/* 🌟 เลเยอร์กระจก (Glass Overlay) ทับรูปภาพให้ตัวหนังสือยังอ่านง่าย */}
-                    <div className="absolute inset-0 bg-white/85 backdrop-blur-[6px] z-0"></div>
+                    <div className="absolute inset-0 bg-white/85 backdrop-blur-[8px] z-0"></div>
 
                     {/* พื้นหลังตกแต่ง (Animated Blobs) ปรับให้นุ่มนวลขึ้น */}
                     <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-purple-300 rounded-full mix-blend-multiply filter blur-[80px] opacity-40 animate-blob z-0"></div>
@@ -171,14 +169,14 @@
                         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
                             <div className="flex justify-between items-center h-full">
                                 <div className="flex items-center gap-3">
-                                    <div className="bg-gradient-to-br from-purple-700 to-purple-900 w-12 h-12 flex items-center justify-center rounded-xl shadow-lg shadow-purple-200/50">
-                                        <i className="fas fa-leaf text-amber-300 text-2xl"></i>
+                                    <div className="bg-gradient-to-br from-purple-700 to-purple-900 w-12 h-12 flex items-center justify-center rounded-xl shadow-lg shadow-purple-200/50 border border-purple-800">
+                                        <i className="fas fa-chart-network text-amber-300 text-xl"></i>
                                     </div>
                                     <div>
-                                        <h1 className="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-900 to-purple-600 leading-none tracking-tight">
-                                            Silk<span className="text-amber-500">Insight</span>
+                                        <h1 className="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-900 to-purple-700 leading-none tracking-tight">
+                                            Seri<span className="text-amber-500">Hub</span>
                                         </h1>
-                                        <p className="text-[11px] text-purple-600 font-bold tracking-widest uppercase mt-0.5">Sericulture Intelligence</p>
+                                        <p className="text-[11px] text-purple-600 font-bold tracking-widest uppercase mt-0.5">Sericulture Data Hub</p>
                                     </div>
                                 </div>
                                 
@@ -197,21 +195,21 @@
                     {/* Hero Section - จัดรูปแบบตัวหนังสือใหม่ทั้งหมด */}
                     <main className="flex-1 flex flex-col items-center justify-center relative z-10 px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
                         <div className="text-center max-w-5xl mx-auto w-full">
-                            <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white/80 backdrop-blur-sm text-purple-700 font-semibold text-sm mb-10 shadow-sm border border-purple-100">
-                                <i className="fas fa-bolt text-amber-500"></i> แพลตฟอร์มข้อมูลอัจฉริยะ ศมม.มุกดาหาร
+                            <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white/90 backdrop-blur-md text-purple-700 font-semibold text-sm mb-10 shadow-sm border border-purple-100">
+                                <i className="fas fa-database text-amber-500"></i> แพลตฟอร์มบริหารจัดการข้อมูล ศมม.มุกดาหาร
                             </div>
                             
                             {/* Typography ที่จัดวางใหม่ให้โดดเด่นและทรงพลัง */}
-                            <h1 className="text-5xl md:text-7xl lg:text-[5rem] font-black text-slate-900 mb-8 leading-[1.1] tracking-tight drop-shadow-sm">
-                                ศูนย์กลาง<br className="md:hidden" />
-                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-700 via-fuchsia-600 to-amber-500 px-2 drop-shadow-md">
-                                    ฐานข้อมูลหม่อนไหม
+                            <h1 className="text-5xl md:text-7xl lg:text-[4.5rem] font-black text-slate-900 mb-8 leading-[1.15] tracking-tight drop-shadow-sm">
+                                ระบบบูรณาการ<br className="md:hidden" />
+                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-800 via-fuchsia-600 to-amber-500 px-2 drop-shadow-md">
+                                    ข้อมูลหม่อนไหมเชิงรุก
                                 </span><br />
-                                <span className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-slate-500 mt-4 block">แห่งอนาคต</span>
+                                <span className="text-3xl md:text-5xl lg:text-[3.5rem] font-extrabold text-slate-500 mt-4 block">เพื่อการวางแผนและส่งเสริม</span>
                             </h1>
                             
                             <p className="text-lg md:text-xl text-slate-600 mb-12 max-w-3xl mx-auto leading-relaxed font-medium">
-                                ระบบบริหารจัดการข้อมูลเกษตรกร การวิเคราะห์ตลาดรังไหม และแผนที่อัจฉริยะ ขับเคลื่อนด้วย Data-Driven เพื่อยกระดับอุตสาหกรรมไหมไทยอย่างยั่งยืน
+                                ศูนย์กลางรวบรวมและวิเคราะห์สถิติผลผลิต ภูมิสารสนเทศ และศักยภาพเกษตรกร เพื่อสนับสนุนการตัดสินใจของผู้บริหาร (Data-Driven Decision) และยกระดับการส่งเสริมอาชีพอย่างแม่นยำ
                             </p>
 
                             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -219,7 +217,7 @@
                                     onClick={() => setIsLoginOpen(true)} 
                                     className="bg-gradient-to-r from-purple-700 to-purple-900 hover:from-purple-800 hover:to-purple-950 text-white px-10 py-4 rounded-full font-bold text-lg transition-all shadow-xl shadow-purple-300 flex items-center justify-center gap-3 transform hover:scale-105"
                                 >
-                                    เข้าสู่ระบบฐานข้อมูล <i className="fas fa-arrow-right"></i>
+                                    เข้าสู่ระบบบริหารจัดการ <i className="fas fa-arrow-right"></i>
                                 </button>
                             </div>
                         </div>
@@ -228,32 +226,32 @@
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-24 w-full max-w-6xl relative z-20">
                             {/* Card 1 */}
                             <div className="glass-card p-8 rounded-[2rem] shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group cursor-default border-t border-l border-white">
-                                <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-sm group-hover:scale-110 transition-transform">
-                                    <i className="fas fa-users"></i>
+                                <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-blue-50 text-blue-700 rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-sm group-hover:scale-110 transition-transform">
+                                    <i className="fas fa-id-card"></i>
                                 </div>
-                                <h3 className="text-xl font-bold text-slate-800 mb-3">ฐานข้อมูลเกษตรกร</h3>
-                                <p className="text-slate-500 leading-relaxed text-sm font-medium">รวบรวมข้อมูลทะเบียนเกษตรกรหม่อนไหม พิกัดแปลงปลูก และรายละเอียดการเพาะปลูกอย่างเป็นระบบ</p>
+                                <h3 className="text-xl font-bold text-slate-800 mb-3">ข้อมูลทะเบียนและศักยภาพ</h3>
+                                <p className="text-slate-600 leading-relaxed text-sm font-medium">จัดการฐานข้อมูลเกษตรกรเชิงลึก เพื่อวิเคราะห์ศักยภาพการผลิตและจำแนกกลุ่มเป้าหมายในการส่งเสริมได้อย่างตรงจุด</p>
                             </div>
                             {/* Card 2 */}
                             <div className="glass-card p-8 rounded-[2rem] shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group cursor-default border-t border-l border-white">
-                                <div className="w-16 h-16 bg-gradient-to-br from-emerald-100 to-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-sm group-hover:scale-110 transition-transform">
+                                <div className="w-16 h-16 bg-gradient-to-br from-emerald-100 to-emerald-50 text-emerald-700 rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-sm group-hover:scale-110 transition-transform">
                                     <i className="fas fa-chart-pie"></i>
                                 </div>
-                                <h3 className="text-xl font-bold text-slate-800 mb-3">วิเคราะห์การตลาด</h3>
-                                <p className="text-slate-500 leading-relaxed text-sm font-medium">ติดตามสถิติการซื้อขายรังไหม ประเมินเกรดผลผลิต และวิเคราะห์รายได้เพื่อวางแผนส่งเสริม</p>
+                                <h3 className="text-xl font-bold text-slate-800 mb-3">สถิติผลผลิตและแนวโน้ม</h3>
+                                <p className="text-slate-600 leading-relaxed text-sm font-medium">ติดตามข้อมูลวงจรการผลิต ปริมาณรังไหม และประเมินรายได้ เพื่อคาดการณ์ความต้องการตลาดและวางแผนสนับสนุนปัจจัยการผลิต</p>
                             </div>
                             {/* Card 3 */}
                             <div className="glass-card p-8 rounded-[2rem] shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group cursor-default border-t border-l border-white">
-                                <div className="w-16 h-16 bg-gradient-to-br from-amber-100 to-amber-50 text-amber-600 rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-sm group-hover:scale-110 transition-transform">
+                                <div className="w-16 h-16 bg-gradient-to-br from-amber-100 to-amber-50 text-amber-700 rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-sm group-hover:scale-110 transition-transform">
                                     <i className="fas fa-map-marked-alt"></i>
                                 </div>
-                                <h3 className="text-xl font-bold text-slate-800 mb-3">Smart Map</h3>
-                                <p className="text-slate-500 leading-relaxed text-sm font-medium">ระบบแผนที่อัจฉริยะ แสดงพิกัดแปลงหม่อน สถานที่ตั้งกลุ่ม และวิเคราะห์พื้นที่ทางภูมิศาสตร์</p>
+                                <h3 className="text-xl font-bold text-slate-800 mb-3">ระบบภูมิสารสนเทศ (GIS)</h3>
+                                <p className="text-slate-600 leading-relaxed text-sm font-medium">วิเคราะห์ความหนาแน่นของพื้นที่ปลูกและจุดรวบรวมผลผลิต ผ่านแผนที่อัจฉริยะ เพื่อบริหารจัดการพื้นที่และโลจิสติกส์การเกษตร</p>
                             </div>
                         </div>
                     </main>
                     
-                    <footer className="text-center py-6 text-slate-400 text-sm z-10 font-medium">
+                    <footer className="text-center py-6 text-slate-500 text-sm z-10 font-medium">
                         &copy; {new Date().getFullYear()} ศูนย์หม่อนไหมเฉลิมพระเกียรติฯ มุกดาหาร. All rights reserved.
                     </footer>
 
@@ -268,7 +266,7 @@
                     <div className={`fixed inset-y-0 right-0 z-50 w-full max-w-md bg-white shadow-2xl transform transition-transform duration-300 ease-in-out flex flex-col ${isLoginOpen ? 'translate-x-0' : 'translate-x-full'}`}>
                         <div className="flex items-center justify-between p-6 border-b border-slate-100">
                             <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
-                                <div className="bg-purple-100 w-8 h-8 flex items-center justify-center rounded-lg text-purple-700"><i className="fas fa-lock text-sm"></i></div> เข้าสู่ระบบ
+                                <div className="bg-purple-100 w-8 h-8 flex items-center justify-center rounded-lg text-purple-700"><i className="fas fa-lock text-sm"></i></div> ยืนยันตัวตน
                             </h2>
                             <button 
                                 onClick={() => setIsLoginOpen(false)}
@@ -281,10 +279,10 @@
                         <div className="flex-1 overflow-y-auto p-6 sm:p-8">
                             <div className="text-center mb-10">
                                 <div className="bg-gradient-to-br from-purple-700 to-purple-900 w-24 h-24 mx-auto flex items-center justify-center rounded-[2rem] shadow-xl shadow-purple-200 mb-6 rotate-3 hover:rotate-0 transition-transform">
-                                    <i className="fas fa-leaf text-amber-300 text-5xl"></i>
+                                    <i className="fas fa-chart-network text-amber-300 text-5xl"></i>
                                 </div>
-                                <h3 className="text-3xl font-black text-purple-900 mb-2 tracking-tight">SilkInsight</h3>
-                                <p className="text-slate-500 text-sm font-medium">โปรดยืนยันตัวตนเพื่อเข้าถึงข้อมูลเชิงลึก</p>
+                                <h3 className="text-3xl font-black text-purple-900 mb-2 tracking-tight">SeriHub</h3>
+                                <p className="text-slate-500 text-sm font-medium">ระบบล็อกอินสำหรับเจ้าหน้าที่และผู้บริหาร</p>
                             </div>
 
                             <LoginForm onSuccess={onLoginSuccess} />
@@ -331,13 +329,11 @@
                     }
 
                     if (foundUser) {
-                        // 🌟 ส่วนที่เพิ่มใหม่: แอบส่งข้อมูล Log การเข้าสู่ระบบไปเก็บไว้ที่ Google Sheets
                         if (LOG_SCRIPT_URL && LOG_SCRIPT_URL.startsWith('http')) {
                             const params = new URLSearchParams({
                                 username: foundUser.username,
                                 name: foundUser.name
                             });
-                            // สั่งให้ดึงข้อมูลแล้วผ่านไปเลย (fire-and-forget) โหมด no-cors เพื่อไม่ให้ติด Error ความปลอดภัย
                             fetch(`${LOG_SCRIPT_URL}?${params.toString()}`, { mode: 'no-cors' })
                                 .catch(err => console.log('Log Error:', err));
                         }
@@ -438,10 +434,10 @@
                     `}>
                         <div className="h-16 flex items-center px-5 border-b border-slate-200 bg-white">
                             <div className="bg-gradient-to-br from-purple-700 to-purple-900 w-8 h-8 flex items-center justify-center rounded-md mr-3 shadow-sm">
-                                <i className="fas fa-leaf text-amber-300 text-sm"></i>
+                                <i className="fas fa-chart-network text-amber-300 text-sm"></i>
                             </div>
                             <div>
-                                <span className="text-lg font-extrabold text-purple-900 leading-none tracking-tight">Silk<span className="text-amber-500">Insight</span></span>
+                                <span className="text-lg font-extrabold text-purple-900 leading-none tracking-tight">Seri<span className="text-amber-500">Hub</span></span>
                             </div>
                             <button 
                                 className="ml-auto lg:hidden w-8 h-8 flex items-center justify-center text-slate-400 hover:text-slate-700 bg-slate-100 rounded-full"
@@ -452,7 +448,7 @@
                         </div>
 
                         <div className="flex-1 overflow-y-auto py-4 px-3 space-y-1 scrollbar-hide">
-                            <p className="px-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Workspace</p>
+                            <p className="px-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Management Portal</p>
                             
                             {DASHBOARDS.map((dash) => (
                                 <button
@@ -486,7 +482,7 @@
                                         {currentUser?.name || 'ผู้ใช้งานระบบ'}
                                     </p>
                                     <p className="text-[10px] text-emerald-600 font-bold flex items-center gap-1">
-                                        <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></div> ออนไลน์
+                                        <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></div> สิทธิ์การเข้าถึง: ปกติ
                                     </p>
                                 </div>
                             </div>
