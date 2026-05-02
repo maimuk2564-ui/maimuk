@@ -70,6 +70,13 @@
     <script type="text/babel">
         const { useState, useEffect } = React;
 
+        // ==========================================
+        // 🌟 ตั้งค่า URL สำหรับเก็บ Log ผู้เข้าใช้งาน
+        // ให้นำลิงก์ Web App จาก Google Apps Script (ที่ทำในขั้นตอนที่ 1) มาวางแทนข้อความด้านล่างนี้
+        // ==========================================
+        const LOG_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxP4C_lcN2_uZ2iWBps0a6K22HY3XADVl8ADgvHr2cS9eNjBP9F2hgnr_8HHKmo-NxH-Q/exec';
+
+
         // --- เมนู Dashboards (เอาหน้าแรกรวมเข้าไปด้วยเพื่อให้เข้าถึงได้หลัง Login) ---
         const DASHBOARDS = [
             { 
@@ -146,10 +153,18 @@
             return (
                 <div className="min-h-screen bg-slate-50 flex flex-col relative overflow-hidden font-prompt">
                     
+                    {/* 🌟 พื้นหลังรูปภาพที่คุณอัปโหลด (image_a3f815.jpg) */}
+                    <div 
+                        className="absolute inset-0 bg-cover bg-center z-0"
+                        style={{ backgroundImage: "url('./image_a3f815.jpg')" }}
+                    ></div>
+                    {/* 🌟 เลเยอร์กระจก (Glass Overlay) ทับรูปภาพให้ตัวหนังสือยังอ่านง่าย */}
+                    <div className="absolute inset-0 bg-white/85 backdrop-blur-[6px] z-0"></div>
+
                     {/* พื้นหลังตกแต่ง (Animated Blobs) ปรับให้นุ่มนวลขึ้น */}
-                    <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-purple-300 rounded-full mix-blend-multiply filter blur-[80px] opacity-40 animate-blob"></div>
-                    <div className="absolute top-[20%] right-[-10%] w-[500px] h-[500px] bg-amber-200 rounded-full mix-blend-multiply filter blur-[80px] opacity-40 animate-blob" style={{ animationDelay: '2s' }}></div>
-                    <div className="absolute bottom-[-20%] left-[20%] w-[500px] h-[500px] bg-pink-200 rounded-full mix-blend-multiply filter blur-[80px] opacity-30 animate-blob" style={{ animationDelay: '4s' }}></div>
+                    <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-purple-300 rounded-full mix-blend-multiply filter blur-[80px] opacity-40 animate-blob z-0"></div>
+                    <div className="absolute top-[20%] right-[-10%] w-[500px] h-[500px] bg-amber-200 rounded-full mix-blend-multiply filter blur-[80px] opacity-40 animate-blob z-0" style={{ animationDelay: '2s' }}></div>
+                    <div className="absolute bottom-[-20%] left-[20%] w-[500px] h-[500px] bg-pink-200 rounded-full mix-blend-multiply filter blur-[80px] opacity-30 animate-blob z-0" style={{ animationDelay: '4s' }}></div>
 
                     {/* Navbar */}
                     <nav className="glass-card sticky top-0 z-40 border-b border-white/50 h-20 shadow-sm">
@@ -316,6 +331,17 @@
                     }
 
                     if (foundUser) {
+                        // 🌟 ส่วนที่เพิ่มใหม่: แอบส่งข้อมูล Log การเข้าสู่ระบบไปเก็บไว้ที่ Google Sheets
+                        if (LOG_SCRIPT_URL && LOG_SCRIPT_URL.startsWith('http')) {
+                            const params = new URLSearchParams({
+                                username: foundUser.username,
+                                name: foundUser.name
+                            });
+                            // สั่งให้ดึงข้อมูลแล้วผ่านไปเลย (fire-and-forget) โหมด no-cors เพื่อไม่ให้ติด Error ความปลอดภัย
+                            fetch(`${LOG_SCRIPT_URL}?${params.toString()}`, { mode: 'no-cors' })
+                                .catch(err => console.log('Log Error:', err));
+                        }
+                        
                         onSuccess(foundUser);
                     } else {
                         setErrorMsg('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
