@@ -71,11 +71,11 @@
         const { useState, useEffect } = React;
 
         // ==========================================
-        // 🌟 ตั้งค่า URL สำหรับเก็บ Log ผู้เข้าใช้งาน
+        // ตั้งค่า URL สำหรับเก็บ Log ผู้เข้าใช้งาน
         // ==========================================
         const LOG_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxP4C_lcN2_uZ2iWBps0a6K22HY3XADVl8ADgvHr2cS9eNjBP9F2hgnr_8HHKmo-NxH-Q/exec';
 
-        // --- เมนู Dashboards (เอาหน้าแรกรวมเข้าไปด้วยเพื่อให้เข้าถึงได้หลัง Login) ---
+        // --- เมนู Dashboards ---
         const DASHBOARDS = [
             { 
                 id: 'home', 
@@ -121,9 +121,6 @@
             }
         ];
 
-        // ==========================================
-        // ส่วนควบคุมหลัก (App)
-        // ==========================================
         function App() {
             const [currentView, setCurrentView] = useState('landing');
             const [currentUser, setCurrentUser] = useState(null);
@@ -143,28 +140,29 @@
         }
 
         // ==========================================
-        // 1. หน้าแรก (Landing Page) - ดีไซน์ใหม่ระดับมืออาชีพ
+        // 1. หน้าแรก (Landing Page)
         // ==========================================
         function LandingPage({ onLoginSuccess }) {
             const [isLoginOpen, setIsLoginOpen] = useState(false);
 
             return (
-                <div className="min-h-screen bg-slate-50 flex flex-col relative overflow-hidden font-prompt">
+                <div className="min-h-screen bg-slate-50 flex flex-col relative overflow-x-hidden font-prompt">
                     
-                    {/* 🌟 พื้นหลังรูปภาพที่คุณอัปโหลด (image_a3f815.jpg) */}
+                    {/* พื้นหลังภาพจาก Google Drive */}
                     <div 
                         className="absolute inset-0 bg-cover bg-center z-0"
-                        style={{ backgroundImage: "url('./image_a3f815.jpg')" }}
+                        style={{ backgroundImage: "url('https://drive.google.com/uc?export=view&id=1X34xglqyEf5eEM79aJW4bWRNnkgtBY9-')" }}
                     ></div>
-                    {/* 🌟 เลเยอร์กระจก (Glass Overlay) ทับรูปภาพให้ตัวหนังสือยังอ่านง่าย */}
-                    <div className="absolute inset-0 bg-white/85 backdrop-blur-[8px] z-0"></div>
+                    
+                    {/* เลเยอร์กระจก ช่วยให้ตัวหนังสืออ่านง่ายขึ้น */}
+                    <div className="absolute inset-0 bg-white/85 backdrop-blur-[10px] z-0"></div>
 
-                    {/* พื้นหลังตกแต่ง (Animated Blobs) ปรับให้นุ่มนวลขึ้น */}
-                    <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-purple-300 rounded-full mix-blend-multiply filter blur-[80px] opacity-40 animate-blob z-0"></div>
-                    <div className="absolute top-[20%] right-[-10%] w-[500px] h-[500px] bg-amber-200 rounded-full mix-blend-multiply filter blur-[80px] opacity-40 animate-blob z-0" style={{ animationDelay: '2s' }}></div>
-                    <div className="absolute bottom-[-20%] left-[20%] w-[500px] h-[500px] bg-pink-200 rounded-full mix-blend-multiply filter blur-[80px] opacity-30 animate-blob z-0" style={{ animationDelay: '4s' }}></div>
+                    {/* พื้นหลังตกแต่ง (Animated Blobs สีสันสวยงาม) */}
+                    <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-purple-300 rounded-full mix-blend-multiply filter blur-[80px] opacity-40 animate-blob z-0 pointer-events-none"></div>
+                    <div className="absolute top-[20%] right-[-10%] w-[500px] h-[500px] bg-amber-200 rounded-full mix-blend-multiply filter blur-[80px] opacity-40 animate-blob z-0 pointer-events-none" style={{ animationDelay: '2s' }}></div>
+                    <div className="absolute bottom-[-20%] left-[20%] w-[500px] h-[500px] bg-pink-200 rounded-full mix-blend-multiply filter blur-[80px] opacity-30 animate-blob z-0 pointer-events-none" style={{ animationDelay: '4s' }}></div>
 
-                    {/* Navbar ปรับขนาดให้เหมาะกับมือถือตามที่แนะนำ */}
+                    {/* Navbar */}
                     <nav className="glass-card sticky top-0 z-40 border-b border-white/50 h-16 sm:h-20 shadow-sm">
                         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
                             <div className="flex justify-between items-center h-full">
@@ -192,65 +190,74 @@
                         </div>
                     </nav>
 
-                    {/* Hero Section - จัดรูปแบบตัวหนังสือใหม่ทั้งหมด */}
-                    <main className="flex-1 flex flex-col items-center justify-center relative z-10 px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
-                        <div className="text-center max-w-5xl mx-auto w-full">
-                            <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white/90 backdrop-blur-md text-purple-700 font-semibold text-sm mb-10 shadow-sm border border-purple-100">
+                    {/* Hero Section */}
+                    <main className="flex-1 flex flex-col items-center justify-center relative z-10 px-4 sm:px-6 lg:px-8 py-10 lg:py-16">
+                        <div className="text-center max-w-5xl mx-auto w-full pt-4 sm:pt-8">
+                            
+                            <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white/90 backdrop-blur-md text-purple-700 font-semibold text-xs sm:text-sm mb-6 shadow-sm border border-purple-100">
                                 <i className="fas fa-database text-amber-500"></i> แพลตฟอร์มบริหารจัดการข้อมูล ศมม.มุกดาหาร
                             </div>
-                            
-                            {/* Typography ปรับคำและเพิ่มระยะห่างบรรทัดให้โปร่งขึ้น */}
-                            <h1 className="text-4xl md:text-6xl lg:text-[4.2rem] font-black text-slate-900 mb-8 leading-normal tracking-tight drop-shadow-sm">
-                                ฐานข้อมูลเกษตรกร<span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-800 via-fuchsia-600 to-amber-500 px-2 drop-shadow-md">ด้านหม่อนไหม</span><br />
-                                <span className="text-3xl md:text-5xl lg:text-[3.5rem] font-extrabold text-slate-500 mt-8 block">เพื่อการวางแผนและส่งเสริมเชิงรุก</span>
+
+                            {/* หัวข้อ "ฐานข้อมูลเกษตรกรด้านหม่อนไหม" บังคับบรรทัดเดียว */}
+                            <h1 className="text-[5.5vw] sm:text-4xl md:text-5xl lg:text-[4.2rem] font-black text-slate-900 mb-2 sm:mb-4 leading-tight tracking-tight whitespace-nowrap drop-shadow-sm">
+                                ฐานข้อมูลเกษตรกร<span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-700 via-fuchsia-600 to-amber-500 px-1 sm:px-2 drop-shadow-md">ด้านหม่อนไหม</span>
                             </h1>
                             
-                            {/* ตัดข้อความให้กระชับ จัด 2 บรรทัด และใช้ whitespace-nowrap ล็อกคำไม่ให้ตกบรรทัดฉีกออกจากกันตามหลักภาษา */}
-                            <p className="text-lg md:text-xl text-slate-600 mb-12 max-w-5xl mx-auto leading-relaxed font-medium">
+                            <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-[3.2rem] font-extrabold text-slate-500 mb-8 sm:mb-12 block drop-shadow-sm">
+                                เพื่อการวางแผนและส่งเสริมเชิงรุก
+                            </h2>
+                            
+                            {/* คำบรรยายหลัก 3 บรรทัด */}
+                            <p className="text-base sm:text-lg md:text-xl text-slate-600 mb-10 sm:mb-12 max-w-4xl mx-auto leading-relaxed font-medium px-2 sm:px-0">
                                 เพื่อสนับสนุนการตัดสินใจของผู้บริหาร (Data-Driven Decision) <br className="hidden md:block" />
-                                วิเคราะห์ปัญหา<span className="whitespace-nowrap">การปลูกหม่อนเลี้ยงไหมของเกษตรกรในพื้นที่</span> ยกระดับการส่งเสริมอาชีพและแก้ไขปัญหาได้อย่างตรงจุด
+                                พร้อมวิเคราะห์ปัญหา<span className="md:whitespace-nowrap text-purple-700 font-semibold">การปลูกหม่อนเลี้ยงไหมของเกษตรกรในพื้นที่</span><br className="hidden md:block" />
+                                สู่การยกระดับการส่งเสริมอาชีพและแก้ไขปัญหาได้อย่างตรงจุด
                             </p>
 
-                            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                            <div className="flex flex-col sm:flex-row gap-4 justify-center px-4">
                                 <button 
                                     onClick={() => setIsLoginOpen(true)} 
-                                    className="bg-gradient-to-r from-purple-700 to-purple-900 hover:from-purple-800 hover:to-purple-950 text-white px-10 py-4 rounded-full font-bold text-lg transition-all shadow-xl shadow-purple-300 flex items-center justify-center gap-3 transform hover:scale-105"
+                                    className="bg-gradient-to-r from-purple-700 to-indigo-700 hover:from-purple-800 hover:to-indigo-800 text-white px-8 py-3.5 sm:px-10 sm:py-4 rounded-full font-bold text-base sm:text-lg transition-all shadow-xl shadow-purple-300 flex items-center justify-center gap-3 transform hover:scale-105"
                                 >
                                     เข้าสู่ระบบบริหารจัดการ <i className="fas fa-arrow-right"></i>
                                 </button>
                             </div>
                         </div>
 
-                        {/* Feature Cards (3 กล่องโชว์ความสามารถ) */}
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-24 w-full max-w-6xl relative z-20">
+                        {/* Feature Cards */}
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 sm:mt-24 w-full max-w-6xl relative z-20">
+                            
                             {/* Card 1 */}
-                            <div className="glass-card p-8 rounded-[2rem] shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group cursor-default border-t border-l border-white">
-                                <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-blue-50 text-blue-700 rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-sm group-hover:scale-110 transition-transform">
-                                    <i className="fas fa-id-card"></i>
+                            <div className="glass-card p-6 sm:p-8 rounded-[2rem] shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group cursor-default border-t border-l border-white/80">
+                                <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-indigo-100 to-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center text-xl sm:text-2xl mb-6 shadow-sm group-hover:scale-110 transition-transform">
+                                    <i className="fas fa-id-card-clip"></i>
                                 </div>
-                                <h3 className="text-xl font-bold text-slate-800 mb-3">ข้อมูลทะเบียนและศักยภาพ</h3>
+                                <h3 className="text-lg sm:text-xl font-bold text-slate-800 mb-3">ข้อมูลทะเบียนและศักยภาพ</h3>
                                 <p className="text-slate-600 leading-relaxed text-sm font-medium">จัดการฐานข้อมูลเกษตรกรเชิงลึก เพื่อวิเคราะห์ศักยภาพการผลิตและจำแนกกลุ่มเป้าหมายในการส่งเสริมได้อย่างตรงจุด</p>
                             </div>
+                            
                             {/* Card 2 */}
-                            <div className="glass-card p-8 rounded-[2rem] shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group cursor-default border-t border-l border-white">
-                                <div className="w-16 h-16 bg-gradient-to-br from-emerald-100 to-emerald-50 text-emerald-700 rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-sm group-hover:scale-110 transition-transform">
-                                    <i className="fas fa-chart-pie"></i>
+                            <div className="glass-card p-6 sm:p-8 rounded-[2rem] shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group cursor-default border-t border-l border-white/80">
+                                <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-emerald-100 to-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center text-xl sm:text-2xl mb-6 shadow-sm group-hover:scale-110 transition-transform">
+                                    <i className="fas fa-chart-column"></i>
                                 </div>
-                                <h3 className="text-xl font-bold text-slate-800 mb-3">สถิติผลผลิตและแนวโน้ม</h3>
+                                <h3 className="text-lg sm:text-xl font-bold text-slate-800 mb-3">สถิติผลผลิตและแนวโน้ม</h3>
                                 <p className="text-slate-600 leading-relaxed text-sm font-medium">ติดตามข้อมูลวงจรการผลิต ปริมาณรังไหม และประเมินรายได้ เพื่อคาดการณ์ความต้องการตลาดและวางแผนสนับสนุนปัจจัยการผลิต</p>
                             </div>
+                            
                             {/* Card 3 */}
-                            <div className="glass-card p-8 rounded-[2rem] shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group cursor-default border-t border-l border-white">
-                                <div className="w-16 h-16 bg-gradient-to-br from-amber-100 to-amber-50 text-amber-700 rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-sm group-hover:scale-110 transition-transform">
-                                    <i className="fas fa-map-marked-alt"></i>
+                            <div className="glass-card p-6 sm:p-8 rounded-[2rem] shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group cursor-default border-t border-l border-white/80">
+                                <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-amber-100 to-orange-50 text-amber-600 rounded-2xl flex items-center justify-center text-xl sm:text-2xl mb-6 shadow-sm group-hover:scale-110 transition-transform">
+                                    <i className="fas fa-map-location-dot"></i>
                                 </div>
-                                <h3 className="text-xl font-bold text-slate-800 mb-3">ระบบภูมิสารสนเทศ (GIS)</h3>
-                                <p className="text-slate-600 leading-relaxed text-sm font-medium">วิเคราะห์ความหนาแน่นของพื้นที่ปลูกและจุดรวบรวมผลผลิต ผ่านแผนที่อัจฉริยะ เพื่อบริหารจัดการพื้นที่และโลจิสติกส์การเกษตร</p>
+                                <h3 className="text-lg sm:text-xl font-bold text-slate-800 mb-3">ระบบภูมิสารสนเทศ (GIS)</h3>
+                                <p className="text-slate-600 leading-relaxed text-sm font-medium">เข้าถึงพิกัดแปลงและข้อมูลกลุ่มเกษตรกรได้อย่างแม่นยำ พร้อมวิเคราะห์ความหนาแน่นของการกระจายตัวในแต่ละอำเภอ ผ่านระบบแผนที่อัจฉริยะ (Smart Map)</p>
                             </div>
+
                         </div>
                     </main>
                     
-                    <footer className="text-center py-6 text-slate-500 text-sm z-10 font-medium">
+                    <footer className="text-center py-6 text-slate-500 text-xs sm:text-sm z-10 font-medium px-4">
                         &copy; {new Date().getFullYear()} ศูนย์หม่อนไหมเฉลิมพระเกียรติฯ มุกดาหาร. All rights reserved.
                     </footer>
 
@@ -280,8 +287,8 @@
                                 <div className="bg-gradient-to-br from-purple-700 to-purple-900 w-24 h-24 mx-auto flex items-center justify-center rounded-[2rem] shadow-xl shadow-purple-200 mb-6 rotate-3 hover:rotate-0 transition-transform">
                                     <i className="fas fa-leaf text-amber-400 text-5xl"></i>
                                 </div>
-                                <h3 className="text-5xl font-black text-purple-900 mb-2 tracking-tight">SeriHub</h3>
-                                <p className="text-slate-500 text-base font-medium mt-3">โปรดยืนยันตัวตนเพื่อเข้าถึงข้อมูลการดูแลเกษตรกร</p>
+                                <h3 className="text-4xl sm:text-5xl font-black text-purple-900 mb-2 tracking-tight">SeriHub</h3>
+                                <p className="text-slate-500 text-sm sm:text-base font-medium mt-3">โปรดยืนยันตัวตนเพื่อเข้าถึงข้อมูลการดูแลเกษตรกร</p>
                             </div>
 
                             <LoginForm onSuccess={onLoginSuccess} />
@@ -292,7 +299,7 @@
         }
 
         // ==========================================
-        // ฟอร์ม Login (เชื่อม Google Sheets)
+        // ฟอร์ม Login
         // ==========================================
         function LoginForm({ onSuccess }) {
             const [username, setUsername] = useState('');
@@ -366,7 +373,7 @@
                                 required
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
-                                className="w-full pl-11 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all font-medium text-base"
+                                className="w-full pl-11 pr-4 py-3.5 sm:py-4 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all font-medium text-sm sm:text-base"
                                 placeholder="กรอกชื่อผู้ใช้งาน..."
                             />
                         </div>
@@ -382,7 +389,7 @@
                                 required
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                className="w-full pl-11 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all font-medium text-base"
+                                className="w-full pl-11 pr-4 py-3.5 sm:py-4 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all font-medium text-sm sm:text-base"
                                 placeholder="••••••••"
                             />
                         </div>
@@ -390,7 +397,7 @@
                     <button
                         type="submit"
                         disabled={isLoading}
-                        className="w-full bg-slate-900 hover:bg-purple-800 text-white font-bold py-4 px-4 rounded-xl transition-all shadow-lg shadow-slate-300 mt-6 disabled:opacity-70 flex justify-center items-center gap-2 text-lg"
+                        className="w-full bg-slate-900 hover:bg-purple-800 text-white font-bold py-3.5 sm:py-4 px-4 rounded-xl transition-all shadow-lg shadow-slate-300 mt-6 disabled:opacity-70 flex justify-center items-center gap-2 text-base sm:text-lg"
                     >
                         {isLoading ? <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div> : <><i className="fas fa-sign-in-alt"></i> เข้าสู่ระบบ</>}
                     </button>
@@ -399,7 +406,7 @@
         }
 
         // ==========================================
-        // 2. หน้า Dashboard Portal (ด้านในแบบ Full-Screen เต็มตา)
+        // 2. หน้า Dashboard Portal
         // ==========================================
         function DashboardPortal({ currentUser, onLogout }) {
             const [activeDashboard, setActiveDashboard] = useState(DASHBOARDS[0]);
@@ -415,7 +422,6 @@
             return (
                 <div className="flex h-screen w-screen bg-white overflow-hidden font-prompt">
                     
-                    {/* Overlay สำหรับมือถือเวลาเปิดเมนูด้านซ้าย */}
                     {isSidebarOpen && (
                         <div 
                             className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 lg:hidden"
@@ -423,7 +429,6 @@
                         ></div>
                     )}
 
-                    {/* เมนูด้านซ้าย (Sidebar) - ปรับให้เพรียวบางลงเล็กน้อย (w-64) เพื่อเพิ่มพื้นที่ให้หน้าจอข้อมูล */}
                     <aside className={`
                         fixed lg:static inset-y-0 left-0 z-50
                         w-64 bg-slate-50 border-r border-slate-200 shadow-xl lg:shadow-none
@@ -494,10 +499,8 @@
                         </div>
                     </aside>
 
-                    {/* พื้นที่แสดงผลด้านขวา (ขยาย 100% ไม่มีขอบ ไม่มี padding) */}
                     <main className="flex-1 flex flex-col min-w-0 bg-white relative">
                         
-                        {/* Header ด้านบน ปรับให้บางลง (h-16) เพื่อเปิดพื้นที่จอให้ได้มากที่สุด */}
                         <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 z-10 shadow-sm">
                             <div className="flex items-center gap-3">
                                 <button 
@@ -527,10 +530,8 @@
                             </div>
                         </header>
 
-                        {/* โซนแสดงหน้าแดชบอร์ด - เอา Padding, Border-radius และความโค้งมนออกทั้งหมดเพื่อให้พอดีกับขอบเป๊ะๆ */}
                         <div className="flex-1 relative w-full h-full overflow-hidden bg-slate-50">
                             
-                            {/* Loading Spinner กลางจอตอนกำลังโหลดเว็บ */}
                             {isLoadingIframe && (
                                 <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm z-10">
                                     <div className="w-12 h-12 border-4 border-slate-100 border-t-purple-600 rounded-full animate-spin mb-3 shadow-md"></div>
@@ -538,7 +539,6 @@
                                 </div>
                             )}
                             
-                            {/* Iframe ตั้งค่าให้คลุมพื้นที่ 100% 100% (absolute inset-0) */}
                             <iframe
                                 src={activeDashboard.url}
                                 className="absolute inset-0 w-full h-full border-none m-0 p-0"
@@ -554,7 +554,6 @@
             );
         }
 
-        // สั่งให้ React ทำงาน
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
     </script>
