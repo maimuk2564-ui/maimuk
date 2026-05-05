@@ -75,7 +75,6 @@
             display: block;
         }
 
-        /* จัดระเบียบ Sidebar ให้แสดงตัวหนังสือครบทุกเมนู */
         .menu-item-text {
             word-wrap: break-word;
             overflow-wrap: break-word;
@@ -94,7 +93,6 @@
 
         const LOG_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxP4C_lcN2_uZ2iWBps0a6K22HY3XADVl8ADgvHr2cS9eNjBP9F2hgnr_8HHKmo-NxH-Q/exec';
 
-        // จัดลำดับเมนูใหม่ตามความต้องการของผู้ใช้งาน
         const DASHBOARDS = [
             { 
                 id: 'home', 
@@ -219,7 +217,7 @@
                             
                             <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-[3.2rem] font-extrabold text-slate-500 mb-10 block tracking-tight">เพื่อการวางแผนและส่งเสริมเชิงรุก</h2>
                             
-                            <div className="text-base sm:text-lg md:text-xl text-slate-600 mb-12 max-w-5xl mx-auto leading-relaxed font-medium px-4">
+                            <div className="text-base sm:text-lg md:text-xl text-slate-600 mb-10 sm:mb-12 max-w-5xl mx-auto leading-relaxed font-medium px-4">
                                 <div className="mb-2">
                                     <span className="semantic-group text-slate-900 font-semibold">ยกระดับประสิทธิภาพการตัดสินใจเชิงบริหาร</span> 
                                     <span className="text-slate-400 ml-2">(Data-Driven Decision)</span>
@@ -362,6 +360,9 @@
 
             const avatarLetter = currentUser?.name ? currentUser.name.charAt(0).toUpperCase() : 'U';
 
+            // ตรวจสอบว่าเป็น Admin หรือไม่
+            const isAdmin = currentUser?.username === 'admin';
+
             return (
                 <div className="flex h-screen w-full bg-white overflow-hidden font-prompt">
                     {isSidebarOpen && <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 lg:hidden" onClick={() => setIsSidebarOpen(false)} />}
@@ -383,10 +384,16 @@
                         </div>
                         <div className="p-4 border-t border-slate-200 bg-white">
                             <div className="flex items-center gap-3 mb-3 px-2">
-                                <div className="w-9 h-9 min-w-[36px] rounded-full bg-gradient-to-tr from-amber-400 to-orange-500 text-white flex items-center justify-center font-bold shadow-md text-sm">{avatarLetter}</div>
+                                <div className={`w-9 h-9 min-w-[36px] rounded-full text-white flex items-center justify-center font-bold shadow-md text-sm ${isAdmin ? 'bg-gradient-to-tr from-purple-600 to-indigo-700' : 'bg-gradient-to-tr from-amber-400 to-orange-500'}`}>
+                                    {avatarLetter}
+                                </div>
                                 <div className="overflow-hidden">
                                     <p className="text-sm font-bold text-slate-800 truncate">{currentUser?.name || 'ผู้ใช้งานระบบ'}</p>
-                                    <div className="text-[10px] text-emerald-600 font-bold flex items-center gap-1"><div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></div> สิทธิ์การเข้าถึง: ปกติ</div>
+                                    {/* 🌟 จุดที่แก้ไข: ตรวจสอบ Admin เพื่อแสดงข้อความและสี 🌟 */}
+                                    <div className={`text-[10px] font-bold flex items-center gap-1 ${isAdmin ? 'text-purple-700' : 'text-emerald-600'}`}>
+                                        <div className={`w-1.5 h-1.5 rounded-full animate-pulse ${isAdmin ? 'bg-purple-600' : 'bg-emerald-500'}`}></div> 
+                                        สิทธิ์การเข้าถึง: {isAdmin ? 'ผู้ดูแลระบบ' : 'ปกติ'}
+                                    </div>
                                 </div>
                             </div>
                             <button onClick={onLogout} className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold text-slate-500 hover:text-red-600 hover:bg-red-50 transition-colors border border-transparent hover:border-red-100"><i className="fas fa-sign-out-alt"></i> ออกจากระบบ</button>
