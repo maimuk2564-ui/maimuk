@@ -46,7 +46,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* จัดการระบบ Scrollbar ให้เหลือเส้นเดียวและดูเรียบง่าย */
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
         
@@ -64,18 +63,25 @@
             border: 1px solid rgba(255, 255, 255, 0.7);
         }
 
-        /* ป้องกันคำแยกออกจากกันในบรรทัดเดียวกัน */
         .semantic-group {
             display: inline-block;
             white-space: nowrap;
         }
         
-        /* จัดการ Iframe ให้เต็มพื้นที่โดยไม่มีขอบเกิน */
         .iframe-container iframe {
             width: 100%;
             height: 100%;
             border: none;
             display: block;
+        }
+
+        /* จัดระเบียบ Sidebar ให้แสดงตัวหนังสือครบทุกเมนู */
+        .menu-item-text {
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            white-space: normal;
+            line-height: 1.3;
+            font-size: 0.875rem;
         }
     </style>
 </head>
@@ -88,14 +94,56 @@
 
         const LOG_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxP4C_lcN2_uZ2iWBps0a6K22HY3XADVl8ADgvHr2cS9eNjBP9F2hgnr_8HHKmo-NxH-Q/exec';
 
+        // จัดลำดับเมนูใหม่ตามความต้องการของผู้ใช้งาน
         const DASHBOARDS = [
-            { id: 'home', title: 'หน้าแรกระบบ (Overview)', icon: 'fas fa-home', url: 'https://script.google.com/macros/s/AKfycbyr3nSM0a_2A1VweZI4Y7LbH4viayDrHJAV21YOqdLCrFw7p7PSuggtbCFVpGJknVo/exec' },
-            { id: 'farmers', title: 'ฐานข้อมูลเกษตรกรหม่อนไหม', icon: 'fas fa-users', url: 'https://script.google.com/macros/s/AKfycbwsWWq0K4O74RuQZ8P2Xc3q3Cy6aGd7MbYokmNti992AEuNG1PGfROjOWlGh5YVhtncKQ/exec' },
-            { id: 'production', title: 'ข้อมูลผลผลิตและรายได้รังไหม', icon: 'fas fa-chart-line', url: 'https://script.google.com/macros/s/AKfycbz29gzuWbCep-AmAhYfyJE93SLqBLn5uavWrm6uRnFiX3nfxK8dEVtkzank_t9mO9C7/exec' },
-            { id: 'standard', title: 'มาตรฐานผ้าตรานกยูง', icon: 'fas fa-shield-alt', url: 'https://script.google.com/macros/s/AKfycbxxm7gHwjQXfYF3sTZTU8WFLiM_lEq9kfD-UHjrVreFCms-z1PVOpbetW52_orB-fRx/exec' },
-            { id: 'calc', title: 'โปรแกรมคำนวณการเก็บไข่ไหม', icon: 'fas fa-calculator', url: 'https://script.google.com/macros/s/AKfycby9I62m3ivrqnwPtE_zp6PCMxsFJKy6AMnfjznrN6cH9eoZS6uqZIYyaHt2edawqibx/exec' },
-            { id: 'dye', title: 'ฐานข้อมูลพันธุ์ไม้ย้อมสี', icon: 'fas fa-leaf', url: 'https://script.google.com/macros/s/AKfycbwqcDINT7edmR2lSI_8CeXgyJ1eZ6U8NWdxsTF4dw5jpXcIdt4-J7eZuKl3rkN8m_Ge3g/exec' },
-            { id: 'map', title: 'Sericulture Smart Map', icon: 'fas fa-map-marked-alt', url: 'https://script.google.com/macros/s/AKfycbyG5Dvx1X6XDYZBB-K4ohjVYEIks-Dx-1CzYEHpILnUlkr2Zqfv5Me5hSMX6XevlXZf/exec' }
+            { 
+                id: 'home', 
+                title: 'หน้าแรก', 
+                icon: 'fas fa-home', 
+                url: 'https://script.google.com/macros/s/AKfycbyr3nSM0a_2A1VweZI4Y7LbH4viayDrHJAV21YOqdLCrFw7p7PSuggtbCFVpGJknVo/exec' 
+            },
+            { 
+                id: 'center-layout', 
+                title: 'แผนผังของศูนย์ฯ', 
+                icon: 'fas fa-sitemap', 
+                url: 'https://script.google.com/macros/s/AKfycbw3uMosWOrCwJTjO3oC62vnGE5HcdopmShKE8R7fi7gECxELDYCkNKBOtNY85pFIX6D/exec' 
+            },
+            { 
+                id: 'farmers', 
+                title: 'ฐานข้อมูลเกษตรกรหม่อนไหม', 
+                icon: 'fas fa-users', 
+                url: 'https://script.google.com/macros/s/AKfycbwsWWq0K4O74RuQZ8P2Xc3q3Cy6aGd7MbYokmNti992AEuNG1PGfROjOWlGh5YVhtncKQ/exec' 
+            },
+            { 
+                id: 'production', 
+                title: 'สถิติการซื้อขายรังไหม', 
+                icon: 'fas fa-chart-line', 
+                url: 'https://script.google.com/macros/s/AKfycbz29gzuWbCep-AmAhYfyJE93SLqBLn5uavWrm6uRnFiX3nfxK8dEVtkzank_t9mO9C7/exec' 
+            },
+            { 
+                id: 'standard', 
+                title: 'มาตรฐานผ้าตรานกยูง', 
+                icon: 'fas fa-shield-alt', 
+                url: 'https://script.google.com/macros/s/AKfycbxxm7gHwjQXfYF3sTZTU8WFLiM_lEq9kfD-UHjrVreFCms-z1PVOpbetW52_orB-fRx/exec' 
+            },
+            { 
+                id: 'calc', 
+                title: 'ระบบวางแผนวงจรผลิต', 
+                icon: 'fas fa-calculator', 
+                url: 'https://script.google.com/macros/s/AKfycby9I62m3ivrqnwPtE_zp6PCMxsFJKy6AMnfjznrN6cH9eoZS6uqZIYyaHt2edawqibx/exec' 
+            },
+            { 
+                id: 'dye', 
+                title: 'ฐานข้อมูลพันธุ์ไม้ย้อมสี', 
+                icon: 'fas fa-leaf', 
+                url: 'https://script.google.com/macros/s/AKfycbwqcDINT7edmR2lSI_8CeXgyJ1eZ6U8NWdxsTF4dw5jpXcIdt4-J7eZuKl3rkN8m_Ge3g/exec' 
+            },
+            { 
+                id: 'map', 
+                title: 'Sericulture Smart Map', 
+                icon: 'fas fa-map-marked-alt', 
+                url: 'https://script.google.com/macros/s/AKfycbyG5Dvx1X6XDYZBB-K4ohjVYEIks-Dx-1CzYEHpILnUlkr2Zqfv5Me5hSMX6XevlXZf/exec' 
+            }
         ];
 
         function App() {
@@ -294,7 +342,7 @@
                             <input type="password" required value={password} onChange={(e) => setPassword(e.target.value)} className="w-full pl-11 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all font-medium text-sm" placeholder="••••••••" />
                         </div>
                     </div>
-                    <button type="submit" disabled={isLoading} className="w-full bg-slate-900 hover:bg-purple-800 text-white font-bold py-3.5 px-4 rounded-xl transition-all shadow-lg shadow-slate-200 mt-6 disabled:opacity-70 flex justify-center items-center gap-2 text-base sm:text-lg">{isLoading ? <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div> : <><i className="fas fa-sign-in-alt"></i> ยืนยันการเข้าใช้ระบบ</>}</button>
+                    <button type="submit" disabled={isLoading} className="w-full bg-slate-900 hover:bg-purple-800 text-white font-bold py-3.5 px-4 rounded-xl transition-all shadow-lg shadow-slate-300 mt-6 disabled:opacity-70 flex justify-center items-center gap-2 text-base sm:text-lg">{isLoading ? <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div> : <><i className="fas fa-sign-in-alt"></i> ยืนยันการเข้าใช้ระบบ</>}</button>
                 </form>
             );
         }
@@ -309,7 +357,6 @@
 
             useEffect(() => {
                 setIsLoadingIframe(true);
-                // บังคับให้ Scroll ไปด้านบนสุดเมื่อเปลี่ยนหน้า
                 window.scrollTo(0, 0);
             }, [activeDashboard.id]);
 
@@ -320,7 +367,7 @@
                     {isSidebarOpen && <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 lg:hidden" onClick={() => setIsSidebarOpen(false)} />}
                     
                     <aside className={`fixed lg:static inset-y-0 left-0 z-50 w-64 bg-slate-50 border-r border-slate-200 transform transition-transform duration-300 ease-in-out flex flex-col ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
-                        <div className="h-16 sm:h-20 flex items-center px-5 border-b border-slate-200 bg-white">
+                        <div className="h-16 sm:h-20 flex items-center px-5 border-b border-slate-200 bg-white flex-shrink-0">
                             <div className="bg-gradient-to-br from-purple-700 to-indigo-900 w-8 h-8 flex items-center justify-center rounded-md mr-3 shadow-sm border border-purple-800"><i className="fas fa-leaf text-amber-400 text-sm"></i></div>
                             <div><span className="text-2xl font-extrabold text-purple-900 leading-none tracking-tight">Seri<span className="text-amber-500">Hub</span></span></div>
                             <button className="ml-auto lg:hidden w-8 h-8 flex items-center justify-center text-slate-400 hover:text-slate-700 bg-slate-100 rounded-full" onClick={() => setIsSidebarOpen(false)}><i className="fas fa-times"></i></button>
@@ -328,7 +375,10 @@
                         <div className="flex-1 overflow-y-auto py-4 px-3 space-y-1 scrollbar-hide">
                             <p className="px-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 mt-2">Management Portal</p>
                             {DASHBOARDS.map((dash) => (
-                                <button key={dash.id} onClick={() => { setActiveDashboard(dash); setIsSidebarOpen(false); }} className={`w-full flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-semibold transition-all group ${activeDashboard.id === dash.id ? 'bg-purple-100 text-purple-800 shadow-sm' : 'text-slate-600 hover:bg-white hover:text-purple-700'}`}><span className={`w-5 text-center text-base ${activeDashboard.id === dash.id ? 'text-purple-700' : 'text-slate-400 group-hover:text-purple-500'}`}><i className={dash.icon}></i></span><span className="text-left line-clamp-1">{dash.title}</span></button>
+                                <button key={dash.id} onClick={() => { setActiveDashboard(dash); setIsSidebarOpen(false); }} className={`w-full flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-semibold transition-all group ${activeDashboard.id === dash.id ? 'bg-purple-100 text-purple-800 shadow-sm' : 'text-slate-600 hover:bg-white hover:text-purple-700'}`}>
+                                    <span className={`w-5 text-center text-base flex-shrink-0 ${activeDashboard.id === dash.id ? 'text-purple-700' : 'text-slate-400 group-hover:text-purple-500'}`}><i className={dash.icon}></i></span>
+                                    <span className="text-left menu-item-text">{dash.title}</span>
+                                </button>
                             ))}
                         </div>
                         <div className="p-4 border-t border-slate-200 bg-white">
@@ -356,7 +406,6 @@
                             </div>
                         </header>
 
-                        {/* พื้นที่แสดง Iframe จัดการความสูงแบบ Flex-1 เพื่อไม่ให้เกิด Double Scrollbar */}
                         <div className="flex-1 relative bg-slate-50 iframe-container overflow-hidden">
                             {isLoadingIframe && (
                                 <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm z-10">
