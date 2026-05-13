@@ -39,16 +39,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* บังคับให้หน้าเว็บไม่มี Scrollbar ตัวนอก */
+        /* จัดระเบียบระบบ Scrollbar ให้หายไปอย่างสมบูรณ์แต่ยังเลื่อนได้ */
         html, body, #root {
             height: 100%;
             width: 100%;
             margin: 0;
             padding: 0;
-            overflow: hidden; /* ห้ามมีสกอร์บาร์ที่ตัวหน้าต่างหลัก */
+            overflow: hidden !important; /* ห้ามมีสกอร์บาร์ที่ตัวหน้าต่างหลักเด็ดขาด */
         }
 
-        /* ซ่อนแถบ Scrollbar สวยๆ (แต่ยังเลื่อนได้) */
+        /* ซ่อนแถบ Scrollbar สำหรับเบราว์เซอร์ส่วนใหญ่ */
         ::-webkit-scrollbar { width: 0px; height: 0px; background: transparent; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -73,6 +73,15 @@
             line-height: 1.3;
             font-size: 0.875rem;
         }
+
+        /* สำหรับหน้า Landing ให้เลื่อนเนื้อหาข้างในได้โดยไม่มี Scrollbar */
+        .scroll-container {
+            height: 100%;
+            overflow-y: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .scroll-container::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased selection:bg-purple-200">
@@ -84,6 +93,7 @@
 
         const LOG_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxP4C_lcN2_uZ2iWBps0a6K22HY3XADVl8ADgvHr2cS9eNjBP9F2hgnr_8HHKmo-NxH-Q/exec';
 
+        // เมนูตามลำดับและชื่อล่าสุดที่คุณพอใจ
         const DASHBOARDS = [
             { 
                 id: 'home', 
@@ -107,7 +117,7 @@
                 id: 'production', 
                 title: 'สถิติการซื้อขายรังไหม', 
                 icon: 'fas fa-chart-line', 
-                url: 'https://script.google.com/macros/s/AKfycbwzTJ15QIXxOEqmF_dOOJPZWyQHBvDF5Lt2_PcJ253imkaLkCrkuy3Q2hU5u-K2QOl5/exec' 
+                url: 'https://script.google.com/macros/s/AKfycbzTJ15QIXxOEqmF_dOOJPZWyQHBvDF5Lt2_PcJ253imkaLkCrkuy3Q2hU5u-K2QOl5/exec' 
             },
             { 
                 id: 'standard', 
@@ -150,7 +160,7 @@
             };
 
             return (
-                <div className="h-full w-full">
+                <div className="h-full w-full overflow-hidden">
                     {currentView === 'landing' ? (
                         <LandingPage onLoginSuccess={handleLoginSuccess} />
                     ) : (
@@ -168,15 +178,12 @@
 
             return (
                 <div className="h-full w-full relative flex flex-col overflow-hidden">
-                    {/* Background Layer */}
                     <div className="absolute inset-0 bg-cover bg-center z-0" style={{ backgroundImage: "url('https://drive.google.com/uc?export=view&id=1X34xglqyEf5eEM79aJW4bWRNnkgtBY9-')" }}></div>
                     <div className="absolute inset-0 bg-white/85 backdrop-blur-[12px] z-0"></div>
 
-                    {/* Decorations */}
                     <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-purple-300 rounded-full mix-blend-multiply filter blur-[80px] opacity-40 animate-blob z-0"></div>
                     <div className="absolute top-[20%] right-[-10%] w-[500px] h-[500px] bg-amber-200 rounded-full mix-blend-multiply filter blur-[80px] opacity-40 animate-blob z-0" style={{ animationDelay: '2s' }}></div>
 
-                    {/* Navbar */}
                     <nav className="glass-card relative z-40 border-b border-white/50 h-16 sm:h-20 shadow-sm flex-shrink-0">
                         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
                             <div className="flex justify-between items-center h-full">
@@ -194,8 +201,7 @@
                         </div>
                     </nav>
 
-                    {/* Content: สามารถ Scroll ได้เฉพาะตรงนี้หากจอย่อเล็ก */}
-                    <main className="flex-1 relative z-10 overflow-y-auto no-scrollbar">
+                    <main className="flex-1 relative z-10 scroll-container">
                         <div className="min-h-full flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
                             <div className="text-center max-w-6xl mx-auto w-full">
                                 <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white/95 backdrop-blur-md text-purple-700 font-semibold text-xs sm:text-sm mb-8 shadow-sm border border-purple-100">
@@ -208,7 +214,7 @@
                                 
                                 <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-[3.2rem] font-extrabold text-slate-500 mb-10 block tracking-tight">เพื่อการวางแผนและส่งเสริมเชิงรุก</h2>
                                 
-                                <div className="text-base sm:text-lg md:text-xl text-slate-600 mb-12 max-w-5xl mx-auto leading-relaxed font-medium px-4">
+                                <div className="text-base sm:text-lg md:text-xl text-slate-600 mb-12 max-w-5xl mx-auto leading-relaxed font-medium px-4 text-center">
                                     <div className="mb-2"><span className="semantic-group text-slate-900 font-semibold">ยกระดับประสิทธิภาพการตัดสินใจเชิงบริหาร</span><span className="text-slate-400 ml-2">(Data-Driven Decision)</span></div>
                                     <div className="mb-2"><span className="semantic-group">ควบคู่การวิเคราะห์สภาพปัญหา</span><span className="semantic-group">การปลูกหม่อนเลี้ยงไหมของเกษตรกรในพื้นที่</span></div>
                                     <div><span className="semantic-group text-indigo-700 font-bold">มุ่งสู่การยกระดับอาชีพ</span><span className="semantic-group ml-1">และแก้ไขปัญหาได้อย่างแม่นยำตรงจุด</span></div>
@@ -223,17 +229,17 @@
                                 <div className="glass-card p-6 sm:p-8 rounded-[2.5rem] shadow-xl border-t border-l border-white/80">
                                     <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-indigo-100 to-indigo-50 text-indigo-700 rounded-2xl flex items-center justify-center text-xl sm:text-2xl mb-6 shadow-sm"><i className="fas fa-id-card-clip"></i></div>
                                     <h3 className="text-lg sm:text-xl font-bold text-slate-800 mb-3">ข้อมูลทะเบียนและศักยภาพ</h3>
-                                    <p className="text-slate-600 leading-relaxed text-sm font-medium">จัดการฐานข้อมูลเกษตรกรเชิงลึก เพื่อวิเคราะห์ศักยภาพการผลิตและจำแนกกลุ่มเป้าหมายในการส่งเสริมได้อย่างตรงจุด</p>
+                                    <p className="text-slate-600 leading-relaxed text-sm font-medium text-left">จัดการฐานข้อมูลเกษตรกรเชิงลึก เพื่อวิเคราะห์ศักยภาพการผลิตและจำแนกกลุ่มเป้าหมายในการส่งเสริมได้อย่างตรงจุด</p>
                                 </div>
                                 <div className="glass-card p-6 sm:p-8 rounded-[2.5rem] shadow-xl border-t border-l border-white/80">
                                     <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-emerald-100 to-emerald-50 text-emerald-700 rounded-2xl flex items-center justify-center text-xl sm:text-2xl mb-6 shadow-sm"><i className="fas fa-chart-column"></i></div>
                                     <h3 className="text-lg sm:text-xl font-bold text-slate-800 mb-3">สถิติผลผลิตและแนวโน้ม</h3>
-                                    <p className="text-slate-600 leading-relaxed text-sm font-medium">ติดตามข้อมูลวงจรการผลิต ปริมาณรังไหม และประเมินรายได้ เพื่อคาดการณ์ความต้องการตลาดและวางแผนสนับสนุนปัจจัยการผลิต</p>
+                                    <p className="text-slate-600 leading-relaxed text-sm font-medium text-left">ติดตามข้อมูลวงจรการผลิต ปริมาณรังไหม และประเมินรายได้ เพื่อคาดการณ์ความต้องการตลาดและวางแผนสนับสนุนปัจจัยการผลิต</p>
                                 </div>
                                 <div className="glass-card p-6 sm:p-8 rounded-[2.5rem] shadow-xl border-t border-l border-white/80">
                                     <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-amber-100 to-orange-50 text-amber-700 rounded-2xl flex items-center justify-center text-xl sm:text-2xl mb-6 shadow-sm"><i className="fas fa-map-location-dot"></i></div>
                                     <h3 className="text-lg sm:text-xl font-bold text-slate-800 mb-3">ระบบภูมิสารสนเทศ (GIS)</h3>
-                                    <p className="text-slate-600 leading-relaxed text-sm font-medium">เข้าถึงพิกัดแปลงและข้อมูลกลุ่มเกษตรกรได้อย่างแม่นยำ พร้อมวิเคราะห์ความหนาแน่นของการกระจายตัวในแต่ละอำเภอ ผ่าน Smart Map</p>
+                                    <p className="text-slate-600 leading-relaxed text-sm font-medium text-left">เข้าถึงพิกัดแปลงและข้อมูลกลุ่มเกษตรกรได้อย่างแม่นยำ พร้อมวิเคราะห์ความหนาแน่นของการกระจายตัวในแต่ละอำเภอ ผ่าน Smart Map</p>
                                 </div>
                             </div>
                             
@@ -243,7 +249,6 @@
                         </div>
                     </main>
 
-                    {/* Login Sidebar */}
                     {isLoginOpen && <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 transition-opacity" onClick={() => setIsLoginOpen(false)} />}
                     <div className={`fixed inset-y-0 right-0 z-50 w-full max-w-md bg-white shadow-2xl transform transition-transform duration-300 ease-in-out flex flex-col ${isLoginOpen ? 'translate-x-0' : 'translate-x-full'}`}>
                         <div className="flex items-center justify-between p-6 border-b border-slate-100">
@@ -305,12 +310,12 @@
 
             return (
                 <form onSubmit={handleLogin} className="space-y-5">
-                    {errorMsg && <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-xl text-sm font-bold flex items-center gap-2 shadow-sm">{errorMsg}</div>}
-                    <div>
+                    {errorMsg && <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-xl text-sm font-bold flex items-center gap-2 shadow-sm text-left">{errorMsg}</div>}
+                    <div className="text-left">
                         <label className="block text-slate-700 text-sm font-bold mb-2">ชื่อผู้ใช้</label>
                         <input type="text" required value={username} onChange={(e) => setUsername(e.target.value)} className="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all font-medium text-sm" placeholder="Username..." />
                     </div>
-                    <div>
+                    <div className="text-left">
                         <label className="block text-slate-700 text-sm font-bold mb-2">รหัสผ่าน</label>
                         <input type="password" required value={password} onChange={(e) => setPassword(e.target.value)} className="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all font-medium text-sm" placeholder="••••••••" />
                     </div>
@@ -359,7 +364,7 @@
                             <div className="flex items-center gap-3 mb-4">
                                 <div className={`w-9 h-9 rounded-full text-white flex items-center justify-center font-bold shadow-md text-sm ${isAdmin ? 'bg-purple-600' : 'bg-amber-500'}`}>{avatarLetter}</div>
                                 <div className="overflow-hidden">
-                                    <p className="text-sm font-bold text-slate-800 truncate">{currentUser?.name || 'User'}</p>
+                                    <p className="text-sm font-bold text-slate-800 truncate text-left">{currentUser?.name || 'User'}</p>
                                     <div className={`text-[10px] font-bold flex items-center gap-1 ${isAdmin ? 'text-purple-600' : 'text-emerald-600'}`}>
                                         <div className={`w-1.5 h-1.5 rounded-full ${isAdmin ? 'bg-purple-600 animate-pulse' : 'bg-emerald-500'}`}></div> {isAdmin ? 'ผู้ดูแลระบบ' : 'ปกติ'}
                                     </div>
@@ -369,7 +374,7 @@
                         </div>
                     </aside>
 
-                    {/* Main Content Area */}
+                    {/* Main Content Area: บังคับความสูงเต็มจอไม่มีสกอร์บาร์ชั้นนอก */}
                     <main className="flex-1 flex flex-col h-full w-full overflow-hidden bg-slate-50">
                         <header className="h-16 sm:h-20 bg-white border-b border-slate-200 flex items-center justify-between px-4 sm:px-6 flex-shrink-0 z-10 shadow-sm">
                             <div className="flex items-center gap-3">
@@ -383,8 +388,8 @@
                             </div>
                         </header>
 
-                        {/* Iframe Viewport: บังคับความสูงให้พอดีพื้นที่เหลือ */}
-                        <div className="flex-1 relative overflow-hidden">
+                        {/* Iframe Viewport: บังคับความสูงให้พอดีพื้นที่เหลือ 100% */}
+                        <div className="flex-1 relative overflow-hidden bg-slate-50">
                             {isLoadingIframe && (
                                 <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm z-20">
                                     <div className="w-12 h-12 border-4 border-slate-100 border-t-purple-600 rounded-full animate-spin mb-3 shadow-md"></div>
