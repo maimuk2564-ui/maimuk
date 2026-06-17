@@ -10,10 +10,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
-    <!-- 1. โหลด React & Babel -->
+    <!-- 1. โหลด React & Babel (ล็อกเวอร์ชันเพื่อความเสถียร) -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone@7.23.6/babel.min.js"></script>
     
     <!-- 2. โหลด Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -45,7 +45,7 @@
             width: 100%;
             margin: 0;
             padding: 0;
-            overflow: hidden !important; /* ห้ามมีสกอร์บาร์ที่ตัวหน้าต่างหลักเด็ดขาด */
+            overflow: hidden !important;
         }
 
         /* ซ่อนแถบ Scrollbar สำหรับเบราว์เซอร์ส่วนใหญ่ */
@@ -83,66 +83,44 @@
         }
         .scroll-container::-webkit-scrollbar { display: none; }
     </style>
+
+    <script>
+        // --- 🔒 ระบบป้องกันการเข้าถึง Source Code เบื้องต้น ---
+        document.addEventListener('contextmenu', (e) => e.preventDefault());
+        document.onkeydown = function(e) {
+            if (e.keyCode == 123) return false; 
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false;
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false;
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false;
+            if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false; 
+        };
+    </script>
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased selection:bg-purple-200">
     
     <div id="root"></div>
 
-    <script type="text/babel">
+    <script type="text/babel" data-presets="react">
         const { useState, useEffect } = React;
+
+        // 🛡️ เทคนิค URL Fragmentation (ฉีกส่วนประกอบลิงก์) เพื่อความปลอดภัย
+        const _P1 = "ht" + "tps" + "://";
+        const _P2 = "sc" + "ri" + "pt.go" + "og" + "le.com/mac" + "ros/s/";
+        const _P3 = "/ex" + "ec";
+        const buildUrl = (k) => `${_P1}${_P2}${k}${_P3}`;
 
         const LOG_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxP4C_lcN2_uZ2iWBps0a6K22HY3XADVl8ADgvHr2cS9eNjBP9F2hgnr_8HHKmo-NxH-Q/exec';
 
-        // เมนูตามลำดับและชื่อล่าสุดที่คุณพอใจ
+        // นำเมนูทั้งหมดกลับมาไว้ที่นี่โดยตรง เพื่อแก้ปัญหา Login ไม่ผ่าน
         const DASHBOARDS = [
-            { 
-                id: 'home', 
-                title: 'หน้าแรก', 
-                icon: 'fas fa-home', 
-                url: 'https://script.google.com/macros/s/AKfycbyr3nSM0a_2A1VweZI4Y7LbH4viayDrHJAV21YOqdLCrFw7p7PSuggtbCFVpGJknVo/exec' 
-            },
-            { 
-                id: 'center-layout', 
-                title: 'แผนผังของศูนย์ฯ', 
-                icon: 'fas fa-sitemap', 
-                url: 'https://script.google.com/macros/s/AKfycbw3uMosWOrCwJTjO3oC62vnGE5HcdopmShKE8R7fi7gECxELDYCkNKBOtNY85pFIX6D/exec' 
-            },
-            { 
-                id: 'farmers', 
-                title: 'ฐานข้อมูลเกษตรกรหม่อนไหม', 
-                icon: 'fas fa-users', 
-                url: 'https://script.google.com/macros/s/AKfycbwsWWq0K4O74RuQZ8P2Xc3q3Cy6aGd7MbYokmNti992AEuNG1PGfROjOWlGh5YVhtncKQ/exec' 
-            },
-            { 
-                id: 'production', 
-                title: 'สถิติการซื้อขายรังไหม', 
-                icon: 'fas fa-chart-line', 
-                url: 'https://script.google.com/macros/s/AKfycby2ghgSNvRA6AaFNYZwgflEd2vqGBnTNR10u0QR4Fhjjrn0Sm1zGrcBcHqU_VmN0mFz/exec' 
-            },
-            { 
-                id: 'standard', 
-                title: 'มาตรฐานผ้าตรานกยูง', 
-                icon: 'fas fa-shield-alt', 
-                url: 'https://script.google.com/macros/s/AKfycbxxm7gHwjQXfYF3sTZTU8WFLiM_lEq9kfD-UHjrVreFCms-z1PVOpbetW52_orB-fRx/exec' 
-            },
-            { 
-                id: 'calc', 
-                title: 'ระบบวางแผนวงจรผลิต', 
-                icon: 'fas fa-calculator', 
-                url: 'https://script.google.com/macros/s/AKfycby9I62m3ivrqnwPtE_zp6PCMxsFJKy6AMnfjznrN6cH9eoZS6uqZIYyaHt2edawqibx/exec' 
-            },
-            { 
-                id: 'dye', 
-                title: 'ฐานข้อมูลพันธุ์ไม้ย้อมสี', 
-                icon: 'fas fa-leaf', 
-                url: 'https://script.google.com/macros/s/AKfycbwqcDINT7edmR2lSI_8CeXgyJ1eZ6U8NWdxsTF4dw5jpXcIdt4-J7eZuKl3rkN8m_Ge3g/exec' 
-            },
-            { 
-                id: 'map', 
-                title: 'Sericulture Smart Map', 
-                icon: 'fas fa-map-marked-alt', 
-                url: 'https://script.google.com/macros/s/AKfycbyG5Dvx1X6XDYZBB-K4ohjVYEIks-Dx-1CzYEHpILnUlkr2Zqfv5Me5hSMX6XevlXZf/exec' 
-            }
+            { id: 'home', title: 'หน้าแรก', icon: 'fas fa-home', k: 'AKfycbyr3nSM0a_2A1VweZI4Y7LbH4viayDrHJAV21YOqdLCrFw7p7PSuggtbCFVpGJknVo' },
+            { id: 'center-layout', title: 'แผนผังของศูนย์ฯ', icon: 'fas fa-sitemap', k: 'AKfycbw3uMosWOrCwJTjO3oC62vnGE5HcdopmShKE8R7fi7gECxELDYCkNKBOtNY85pFIX6D' },
+            { id: 'farmers', title: 'ฐานข้อมูลเกษตรกรหม่อนไหม', icon: 'fas fa-users', k: 'AKfycbwsWWq0K4O74RuQZ8P2Xc3q3Cy6aGd7MbYokmNti992AEuNG1PGfROjOWlGh5YVhtncKQ' },
+            { id: 'production', title: 'สถิติการซื้อขายรังไหม', icon: 'fas fa-chart-line', k: 'AKfycbzTJ15QIXxOEqmF_dOOJPZWyQHBvDF5Lt2_PcJ253imkaLkCrkuy3Q2hU5u-K2QOl5' },
+            { id: 'standard', title: 'มาตรฐานผ้าตรานกยูง', icon: 'fas fa-shield-alt', k: 'AKfycbxxm7gHwjQXfYF3sTZTU8WFLiM_lEq9kfD-UHjrVreFCms-z1PVOpbetW52_orB-fRx' },
+            { id: 'calc', title: 'ระบบวางแผนวงจรผลิต', icon: 'fas fa-calculator', k: 'AKfycby9I62m3ivrqnwPtE_zp6PCMxsFJKy6AMnfjznrN6cH9eoZS6uqZIYyaHt2edawqibx' },
+            { id: 'dye', title: 'ฐานข้อมูลพันธุ์ไม้ย้อมสี', icon: 'fas fa-leaf', k: 'AKfycbwqcDINT7edmR2lSI_8CeXgyJ1eZ6U8NWdxsTF4dw5jpXcIdt4-J7eZuKl3rkN8m_Ge3g' },
+            { id: 'map', title: 'Sericulture Smart Map', icon: 'fas fa-map-marked-alt', k: 'AKfycbyG5Dvx1X6XDYZBB-K4ohjVYEIks-Dx-1CzYEHpILnUlkr2Zqfv5Me5hSMX6XevlXZf' }
         ];
 
         function App() {
@@ -151,7 +129,7 @@
 
             const handleLoginSuccess = (user) => {
                 setCurrentUser(user);
-                setCurrentView('portal');
+                setCurrentView('portal'); // เมื่อ Login ถูกต้อง จะตัดเข้าหน้า Dashboard ทันที
             };
 
             const handleLogout = () => {
@@ -212,7 +190,7 @@
                                     ฐานข้อมูลเกษตรกร<span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-700 via-fuchsia-600 to-amber-500 px-1 sm:px-2">ด้านหม่อนไหม</span>
                                 </h1>
                                 
-                                <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-[3.2rem] font-extrabold text-slate-500 mb-10 block tracking-tight">เพื่อการวางแผนและส่งเสริมเชิงรุก</h2>
+                                <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-[3.2rem] font-extrabold text-slate-500 mb-10 block tracking-tight text-center">เพื่อการวางแผนและส่งเสริมเชิงรุก</h2>
                                 
                                 <div className="text-base sm:text-lg md:text-xl text-slate-600 mb-12 max-w-5xl mx-auto leading-relaxed font-medium px-4 text-center">
                                     <div className="mb-2"><span className="semantic-group text-slate-900 font-semibold">ยกระดับประสิทธิภาพการตัดสินใจเชิงบริหาร</span><span className="text-slate-400 ml-2">(Data-Driven Decision)</span></div>
@@ -228,17 +206,17 @@
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-20 w-full max-w-6xl relative z-20">
                                 <div className="glass-card p-6 sm:p-8 rounded-[2.5rem] shadow-xl border-t border-l border-white/80">
                                     <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-indigo-100 to-indigo-50 text-indigo-700 rounded-2xl flex items-center justify-center text-xl sm:text-2xl mb-6 shadow-sm"><i className="fas fa-id-card-clip"></i></div>
-                                    <h3 className="text-lg sm:text-xl font-bold text-slate-800 mb-3">ข้อมูลทะเบียนและศักยภาพ</h3>
+                                    <h3 className="text-lg sm:text-xl font-bold text-slate-800 mb-3 text-center">ข้อมูลทะเบียนและศักยภาพ</h3>
                                     <p className="text-slate-600 leading-relaxed text-sm font-medium text-left">จัดการฐานข้อมูลเกษตรกรเชิงลึก เพื่อวิเคราะห์ศักยภาพการผลิตและจำแนกกลุ่มเป้าหมายในการส่งเสริมได้อย่างตรงจุด</p>
                                 </div>
                                 <div className="glass-card p-6 sm:p-8 rounded-[2.5rem] shadow-xl border-t border-l border-white/80">
                                     <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-emerald-100 to-emerald-50 text-emerald-700 rounded-2xl flex items-center justify-center text-xl sm:text-2xl mb-6 shadow-sm"><i className="fas fa-chart-column"></i></div>
-                                    <h3 className="text-lg sm:text-xl font-bold text-slate-800 mb-3">สถิติผลผลิตและแนวโน้ม</h3>
+                                    <h3 className="text-lg sm:text-xl font-bold text-slate-800 mb-3 text-center">สถิติผลผลิตและแนวโน้ม</h3>
                                     <p className="text-slate-600 leading-relaxed text-sm font-medium text-left">ติดตามข้อมูลวงจรการผลิต ปริมาณรังไหม และประเมินรายได้ เพื่อคาดการณ์ความต้องการตลาดและวางแผนสนับสนุนปัจจัยการผลิต</p>
                                 </div>
                                 <div className="glass-card p-6 sm:p-8 rounded-[2.5rem] shadow-xl border-t border-l border-white/80">
                                     <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-amber-100 to-orange-50 text-amber-700 rounded-2xl flex items-center justify-center text-xl sm:text-2xl mb-6 shadow-sm"><i className="fas fa-map-location-dot"></i></div>
-                                    <h3 className="text-lg sm:text-xl font-bold text-slate-800 mb-3">ระบบภูมิสารสนเทศ (GIS)</h3>
+                                    <h3 className="text-lg sm:text-xl font-bold text-slate-800 mb-3 text-center">ระบบภูมิสารสนเทศ (GIS)</h3>
                                     <p className="text-slate-600 leading-relaxed text-sm font-medium text-left">เข้าถึงพิกัดแปลงและข้อมูลกลุ่มเกษตรกรได้อย่างแม่นยำ พร้อมวิเคราะห์ความหนาแน่นของการกระจายตัวในแต่ละอำเภอ ผ่าน Smart Map</p>
                                 </div>
                             </div>
@@ -249,6 +227,7 @@
                         </div>
                     </main>
 
+                    {/* Login Sidebar */}
                     {isLoginOpen && <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 transition-opacity" onClick={() => setIsLoginOpen(false)} />}
                     <div className={`fixed inset-y-0 right-0 z-50 w-full max-w-md bg-white shadow-2xl transform transition-transform duration-300 ease-in-out flex flex-col ${isLoginOpen ? 'translate-x-0' : 'translate-x-full'}`}>
                         <div className="flex items-center justify-between p-6 border-b border-slate-100">
@@ -297,6 +276,10 @@
                         }
                     }
                     if (foundUser) {
+                        if (LOG_SCRIPT_URL && LOG_SCRIPT_URL.startsWith('http')) {
+                            const params = new URLSearchParams({ username: foundUser.username, name: foundUser.name });
+                            fetch(`${LOG_SCRIPT_URL}?${params.toString()}`, { mode: 'no-cors' }).catch(err => console.log('Log Error:', err));
+                        }
                         onSuccess(foundUser);
                     } else {
                         setErrorMsg('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
@@ -325,7 +308,7 @@
         }
 
         // ==========================================
-        // 2. หน้า Dashboard Portal
+        // 2. หน้า Dashboard Portal (ล็อคความสูง 100%)
         // ==========================================
         function DashboardPortal({ currentUser, onLogout }) {
             const [activeDashboard, setActiveDashboard] = useState(DASHBOARDS[0]);
@@ -340,7 +323,7 @@
             const isAdmin = currentUser?.username === 'admin';
 
             return (
-                <div className="flex h-screen w-full bg-white overflow-hidden font-prompt">
+                <div className="flex h-screen w-full bg-white overflow-hidden font-prompt fixed inset-0">
                     {/* Sidebar Overlay */}
                     {isSidebarOpen && <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 lg:hidden" onClick={() => setIsSidebarOpen(false)} />}
                     
@@ -374,22 +357,20 @@
                         </div>
                     </aside>
 
-                    {/* Main Content Area: บังคับความสูงเต็มจอไม่มีสกอร์บาร์ชั้นนอก */}
-                    <main className="flex-1 flex flex-col h-full w-full overflow-hidden bg-slate-50">
+                    <main className="flex-1 flex flex-col h-full w-full overflow-hidden bg-slate-50 relative">
                         <header className="h-16 sm:h-20 bg-white border-b border-slate-200 flex items-center justify-between px-4 sm:px-6 flex-shrink-0 z-10 shadow-sm">
                             <div className="flex items-center gap-3">
                                 <button className="lg:hidden w-9 h-9 flex items-center justify-center text-slate-600 bg-slate-50 border border-slate-200 rounded-lg" onClick={() => setIsSidebarOpen(true)}><i className="fas fa-bars"></i></button>
                                 <h2 className="text-lg sm:text-xl font-extrabold text-slate-800 tracking-tight flex items-center gap-2">{activeDashboard.title}</h2>
                             </div>
                             <div className="flex items-center gap-2">
-                                <a href={activeDashboard.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-slate-50 hover:bg-slate-100 text-slate-500 hover:text-slate-800 px-3 py-1.5 rounded-md border border-slate-200 transition-all shadow-sm">
+                                <a href={buildUrl(activeDashboard.k)} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-slate-50 hover:bg-slate-100 text-slate-500 hover:text-slate-800 px-3 py-1.5 rounded-md border border-slate-200 transition-all shadow-sm">
                                     <i className="fas fa-external-link-alt text-xs"></i><span className="text-xs font-bold hidden sm:inline">เปิดเต็มจอ</span>
                                 </a>
                             </div>
                         </header>
 
-                        {/* Iframe Viewport: บังคับความสูงให้พอดีพื้นที่เหลือ 100% */}
-                        <div className="flex-1 relative overflow-hidden bg-slate-50">
+                        <div className="flex-1 relative w-full h-full overflow-hidden bg-slate-50">
                             {isLoadingIframe && (
                                 <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm z-20">
                                     <div className="w-12 h-12 border-4 border-slate-100 border-t-purple-600 rounded-full animate-spin mb-3 shadow-md"></div>
@@ -397,8 +378,9 @@
                                 </div>
                             )}
                             <iframe 
-                                src={activeDashboard.url} 
-                                className="absolute inset-0 w-full h-full border-none m-0 p-0" 
+                                src={buildUrl(activeDashboard.k)} 
+                                className="absolute inset-0 w-full h-full border-none m-0 p-0 overflow-hidden" 
+                                style={{ height: '100%', width: '100%' }}
                                 title={activeDashboard.title} 
                                 allowFullScreen 
                                 onLoad={() => setIsLoadingIframe(false)}
