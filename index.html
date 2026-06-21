@@ -5,17 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SeriHub - แพลตฟอร์มบริหารจัดการและวิเคราะห์ข้อมูลหม่อนไหม</title>
     
-    <!-- นำเข้าฟอนต์ Prompt -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
-    <!-- 1. โหลด React & Babel (ล็อกเวอร์ชันเพื่อความเสถียร) -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone@7.23.6/babel.min.js"></script>
     
-    <!-- 2. โหลด Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -100,7 +97,7 @@
     
     <div id="root"></div>
 
-    <script type="text/babel" data-presets="react">
+    <script type="text/babel" data-presets="env,react">
         const { useState, useEffect } = React;
 
         // 🛡️ เทคนิค URL Fragmentation (ฉีกส่วนประกอบลิงก์) เพื่อความปลอดภัย
@@ -111,16 +108,15 @@
 
         const LOG_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxP4C_lcN2_uZ2iWBps0a6K22HY3XADVl8ADgvHr2cS9eNjBP9F2hgnr_8HHKmo-NxH-Q/exec';
 
-        // นำเมนูทั้งหมดกลับมาไว้ที่นี่โดยตรง เพื่อแก้ปัญหา Login ไม่ผ่าน
+        // นำเมนูทั้งหมดมาไว้ที่นี่ (อัปเดตนำ Smart Map ออกแล้ว)
         const DASHBOARDS = [
             { id: 'home', title: 'หน้าแรก', icon: 'fas fa-home', k: 'AKfycbyr3nSM0a_2A1VweZI4Y7LbH4viayDrHJAV21YOqdLCrFw7p7PSuggtbCFVpGJknVo' },
             { id: 'center-layout', title: 'แผนผังของศูนย์ฯ', icon: 'fas fa-sitemap', k: 'AKfycbw3uMosWOrCwJTjO3oC62vnGE5HcdopmShKE8R7fi7gECxELDYCkNKBOtNY85pFIX6D' },
             { id: 'farmers', title: 'ฐานข้อมูลเกษตรกรหม่อนไหม', icon: 'fas fa-users', k: 'AKfycbwsWWq0K4O74RuQZ8P2Xc3q3Cy6aGd7MbYokmNti992AEuNG1PGfROjOWlGh5YVhtncKQ' },
-            { id: 'production', title: 'สถิติการซื้อขายรังไหม', icon: 'fas fa-chart-line', k: 'AKfycbzTJ15QIXxOEqmF_dOOJPZWyQHBvDF5Lt2_PcJ253imkaLkCrkuy3Q2hU5u-K2QOl5' },
+            { id: 'production', title: 'สถิติการซื้อขายรังไหม', icon: 'fas fa-chart-line', k: 'AKfycbw65zi-Vet_CqObIyfHooyIh3sX4WTH0lBE1J3O00LfQMBbu9Sx2CYtc1KaxLlPPci1' },
             { id: 'standard', title: 'มาตรฐานผ้าตรานกยูง', icon: 'fas fa-shield-alt', k: 'AKfycbxxm7gHwjQXfYF3sTZTU8WFLiM_lEq9kfD-UHjrVreFCms-z1PVOpbetW52_orB-fRx' },
             { id: 'calc', title: 'ระบบวางแผนวงจรผลิต', icon: 'fas fa-calculator', k: 'AKfycby9I62m3ivrqnwPtE_zp6PCMxsFJKy6AMnfjznrN6cH9eoZS6uqZIYyaHt2edawqibx' },
-            { id: 'dye', title: 'ฐานข้อมูลพันธุ์ไม้ย้อมสี', icon: 'fas fa-leaf', k: 'AKfycbwqcDINT7edmR2lSI_8CeXgyJ1eZ6U8NWdxsTF4dw5jpXcIdt4-J7eZuKl3rkN8m_Ge3g' },
-            { id: 'map', title: 'Sericulture Smart Map', icon: 'fas fa-map-marked-alt', k: 'AKfycbyG5Dvx1X6XDYZBB-K4ohjVYEIks-Dx-1CzYEHpILnUlkr2Zqfv5Me5hSMX6XevlXZf' }
+            { id: 'dye', title: 'ฐานข้อมูลพันธุ์ไม้ย้อมสี', icon: 'fas fa-leaf', k: 'AKfycby42WYGfzn9C9gRVQVUS2o5t7J4M5xeVu-_US0dbPtAsgatnutKepVcPRxs08qV5Ino' }
         ];
 
         function App() {
@@ -234,7 +230,7 @@
                             <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2"><div className="bg-purple-100 w-8 h-8 flex items-center justify-center rounded-lg text-purple-700"><i className="fas fa-lock text-sm"></i></div> ยืนยันตัวตน</h2>
                             <button onClick={() => setIsLoginOpen(false)} className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-colors"><i className="fas fa-times text-xl"></i></button>
                         </div>
-                        <div className="flex-1 overflow-y-auto p-6 sm:p-8 no-scrollbar">
+                        <div className="flex-1 overflow-y-auto p-6 sm:p-8 scroll-container">
                             <div className="text-center mb-10">
                                 <div className="bg-gradient-to-br from-purple-700 to-indigo-900 w-24 h-24 mx-auto flex items-center justify-center rounded-[2rem] shadow-xl shadow-purple-200 mb-6 rotate-3 hover:rotate-0 transition-transform"><i className="fas fa-leaf text-amber-400 text-5xl"></i></div>
                                 <h3 className="text-4xl sm:text-5xl font-black text-purple-900 mb-2 tracking-tight">SeriHub</h3>
@@ -334,7 +330,7 @@
                             <div><span className="text-2xl font-extrabold text-purple-900 leading-none tracking-tight">Seri<span className="text-amber-500">Hub</span></span></div>
                             <button className="ml-auto lg:hidden text-slate-400" onClick={() => setIsSidebarOpen(false)}><i className="fas fa-times text-xl"></i></button>
                         </div>
-                        <div className="flex-1 overflow-y-auto py-4 px-3 space-y-1 no-scrollbar">
+                        <div className="flex-1 overflow-y-auto py-4 px-3 space-y-1 scroll-container">
                             <p className="px-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">Portal Menu</p>
                             {DASHBOARDS.map((dash) => (
                                 <button key={dash.id} onClick={() => { setActiveDashboard(dash); setIsSidebarOpen(false); }} className={`w-full flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-semibold transition-all group ${activeDashboard.id === dash.id ? 'bg-purple-100 text-purple-800 shadow-sm' : 'text-slate-600 hover:bg-white hover:text-purple-700'}`}>
