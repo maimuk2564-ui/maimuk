@@ -82,15 +82,25 @@
     </style>
 
     <script>
-        // --- 🔒 ระบบป้องกันการเข้าถึง Source Code เบื้องต้น ---
+        // --- 🔒 ระบบป้องกันการเข้าถึง Source Code และ Anti-DevTools ขั้นสูง ---
         document.addEventListener('contextmenu', (e) => e.preventDefault());
         document.onkeydown = function(e) {
-            if (e.keyCode == 123) return false; 
-            if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false;
-            if (e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false;
-            if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false;
-            if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false; 
+            if (e.keyCode == 123) return false; // F12
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false; // Ctrl+Shift+I
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false; // Ctrl+Shift+C
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false; // Ctrl+Shift+J
+            if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false; // Ctrl+U
         };
+
+        // สคริปต์ป้องกันการเปิด DevTools (หากแอบเปิด หน้าเว็บจะหยุดทำงานและรีเฟรชตัวเอง)
+        setInterval(function() {
+            let before = new Date().getTime();
+            debugger; 
+            let after = new Date().getTime();
+            if (after - before > 100) {
+                document.body.innerHTML = "<div style='display:flex; justify-content:center; align-items:center; height:100vh; background:#f8fafc; font-family: sans-serif; color: #b91c1c;'><h2><i class='fas fa-shield-alt'></i> ไม่อนุญาตให้เข้าถึงระบบตรวจสอบข้อมูล</h2></div>";
+            }
+        }, 2000);
     </script>
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased selection:bg-purple-200">
@@ -100,24 +110,27 @@
     <script type="text/babel" data-presets="env,react">
         const { useState, useEffect } = React;
 
-        // 🛡️ เทคนิค URL Fragmentation (ฉีกส่วนประกอบลิงก์) เพื่อความปลอดภัย
+        // 🛡️ เทคนิค URL Fragmentation และการ Obfuscation (เข้ารหัสคีย์) เพื่อความปลอดภัย
         const _P1 = "ht" + "tps" + "://";
         const _P2 = "sc" + "ri" + "pt.go" + "og" + "le.com/mac" + "ros/s/";
         const _P3 = "/ex" + "ec";
-        const buildUrl = (k) => `${_P1}${_P2}${k}${_P3}`;
+        
+        // ฟังก์ชันถอดรหัส (Reverse string กลับเป็นปกติเฉพาะตอนทำงาน)
+        const _dx = (s) => s.split('').reverse().join('');
+        const buildUrl = (k) => `${_P1}${_P2}${_dx(k)}${_P3}`;
 
         const LOG_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxP4C_lcN2_uZ2iWBps0a6K22HY3XADVl8ADgvHr2cS9eNjBP9F2hgnr_8HHKmo-NxH-Q/exec';
 
-        // เมนูทั้งหมดของระบบ
+        // เมนูทั้งหมดของระบบ (คีย์ถูกสลับตัวอักษรจากหลังมาหน้าเพื่อป้องกันการก็อปปี้ตรงๆ)
         const DASHBOARDS = [
-            { id: 'home', title: 'หน้าแรก', icon: 'fas fa-home', k: 'AKfycbyr3nSM0a_2A1VweZI4Y7LbH4viayDrHJAV21YOqdLCrFw7p7PSuggtbCFVpGJknVo' },
-            { id: 'center-layout', title: 'แผนผังของศูนย์ฯ', icon: 'fas fa-sitemap', k: 'AKfycbw3uMosWOrCwJTjO3oC62vnGE5HcdopmShKE8R7fi7gECxELDYCkNKBOtNY85pFIX6D' },
-            { id: 'farmers', title: 'ฐานข้อมูลเกษตรกรหม่อนไหม', icon: 'fas fa-users', k: 'AKfycbwsWWq0K4O74RuQZ8P2Xc3q3Cy6aGd7MbYokmNti992AEuNG1PGfROjOWlGh5YVhtncKQ' },
-            { id: 'production', title: 'สถิติการซื้อขายรังไหม', icon: 'fas fa-chart-line', k: 'AKfycbw65zi-Vet_CqObIyfHooyIh3sX4WTH0lBE1J3O00LfQMBbu9Sx2CYtc1KaxLlPPci1' },
-            { id: 'standard', title: 'มาตรฐานผ้าตรานกยูง', icon: 'fas fa-shield-alt', k: 'AKfycbzJt9Kv0yKtgl5ThaXEaVck_1qulxa0u7mNUQuQKKm-xcxxCEbQyKLshwOMKMHDPQcm' },
-            { id: 'calc', title: 'ระบบคำนวณการเก็บไข่ไหม', icon: 'fas fa-calculator', k: 'AKfycbxBNoxfPLno6IgBRjkFLgT-FzU24d3p7YPHJJxqr8G_S91qbGmlM-vlncMnREyGVcnRCQ' },
-            { id: 'dye', title: 'ฐานข้อมูลพันธุ์ไม้ย้อมสี', icon: 'fas fa-leaf', k: 'AKfycby42WYGfzn9C9gRVQVUS2o5t7J4M5xeVu-_US0dbPtAsgatnutKepVcPRxs08qV5Ino' },
-            { id: 'smart-map', title: 'Seri Smart Map', icon: 'fas fa-map-location-dot', k: 'AKfycbz3EQYvENC9Ipkr4Woje6xJWr6AxU9gBhZt097aDzDfpz9HG3X6Y_GzHE2njpYHlqzi' }
+            { id: 'home', title: 'หน้าแรก', icon: 'fas fa-home', k: 'oVnkJGpVFCbtgguSP7p7wFrCLdqOY12VAJHDryaiv4HbL7Y4IZewV1A2_a0MSn3rybcyfKA' },
+            { id: 'center-layout', title: 'แผนผังของศูนย์ฯ', icon: 'fas fa-sitemap', k: 'D6XIFp5YNTObKNkCYDLExCg7if7R8EKhSmpodcH5EGnv26Co3OJTJwCwROWsMoMu3wbcyfKA' },
+            { id: 'farmers', title: 'ฐานข้อมูลเกษตรกรหม่อนไหม', icon: 'fas fa-users', k: 'QKcnthVY5hGlWOjORfGP1GNuEA299itNnmkOYbM7dGa6yC3q3cX2P8ZQRu47O4K0qWWswbcyfKA' },
+            { id: 'production', title: 'สถิติการซื้อขายรังไหม', icon: 'fas fa-chart-line', k: '1icPPlLaK1ctYC2xS9ubBMQfL00O3J1EB0HTW4Xs3hIyoohFyIbOqC_teV-iz56wbcyfKA' },
+            { id: 'standard', title: 'มาตรฐานผ้าตรานกยูง', icon: 'fas fa-shield-alt', k: 'mcQPDHMKMOwhsLKyQBECxxcx-mKKuQUNm7u0axluq1_kcVaEXahT5lgtkY0vK9tJzbcyfKA' },
+            { id: 'calc', title: 'ระบบคำนวณการเก็บไข่ไหม', icon: 'fas fa-calculator', k: 'QCRncVGyeRnMcnlv-MlmGbq19S_G8rqxJJHPY7p3d42UzF-TgLFkjRBgI6onLPfxONBxbcyfKA' },
+            { id: 'dye', title: 'ฐานข้อมูลพันธุ์ไม้ย้อมสี', icon: 'fas fa-leaf', k: 'onI5Vq80sxRPcVpeKtuntagsAtPbd0SU_-uVex5M4J7t5o2SUVQVRg9C9nzfGYW24ybcyfKA' },
+            { id: 'smart-map', title: 'Seri Smart Map', icon: 'fas fa-map-location-dot', k: 'izqlHYpjN2EHzG_Y6X3GH9zpfDZD7a790tZBhBg9UxA6rWJx6ejWoW4rkpI9CNEvYQE3zbcyfKA' }
         ];
 
         function App() {
@@ -360,10 +373,11 @@
                                 <button className="lg:hidden w-9 h-9 flex items-center justify-center text-slate-600 bg-slate-50 border border-slate-200 rounded-lg" onClick={() => setIsSidebarOpen(true)}><i className="fas fa-bars"></i></button>
                                 <h2 className="text-lg sm:text-xl font-extrabold text-slate-800 tracking-tight flex items-center gap-2">{activeDashboard.title}</h2>
                             </div>
+                            {/* 🔒 นำปุ่ม "เปิดเต็มจอ" ที่ใช้ดึงลิงก์ออกทั้งหมด */}
                             <div className="flex items-center gap-2">
-                                <a href={buildUrl(activeDashboard.k)} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-slate-50 hover:bg-slate-100 text-slate-500 hover:text-slate-800 px-3 py-1.5 rounded-md border border-slate-200 transition-all shadow-sm">
-                                    <i className="fas fa-external-link-alt text-xs"></i><span className="text-xs font-bold hidden sm:inline">เปิดเต็มจอ</span>
-                                </a>
+                                <div className="text-xs font-bold text-slate-400 bg-slate-100 px-3 py-1.5 rounded-md border border-slate-200">
+                                    <i className="fas fa-lock text-[10px] mr-1"></i> Secure View
+                                </div>
                             </div>
                         </header>
 
