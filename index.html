@@ -108,16 +108,16 @@
 
         const LOG_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxP4C_lcN2_uZ2iWBps0a6K22HY3XADVl8ADgvHr2cS9eNjBP9F2hgnr_8HHKmo-NxH-Q/exec';
 
-        // นำเมนูทั้งหมดมาไว้ที่นี่ (อัปเดตเพิ่ม Smart Map แล้ว)
+        // เมนูทั้งหมดของระบบ
         const DASHBOARDS = [
             { id: 'home', title: 'หน้าแรก', icon: 'fas fa-home', k: 'AKfycbyr3nSM0a_2A1VweZI4Y7LbH4viayDrHJAV21YOqdLCrFw7p7PSuggtbCFVpGJknVo' },
             { id: 'center-layout', title: 'แผนผังของศูนย์ฯ', icon: 'fas fa-sitemap', k: 'AKfycbw3uMosWOrCwJTjO3oC62vnGE5HcdopmShKE8R7fi7gECxELDYCkNKBOtNY85pFIX6D' },
             { id: 'farmers', title: 'ฐานข้อมูลเกษตรกรหม่อนไหม', icon: 'fas fa-users', k: 'AKfycbwsWWq0K4O74RuQZ8P2Xc3q3Cy6aGd7MbYokmNti992AEuNG1PGfROjOWlGh5YVhtncKQ' },
             { id: 'production', title: 'สถิติการซื้อขายรังไหม', icon: 'fas fa-chart-line', k: 'AKfycbw65zi-Vet_CqObIyfHooyIh3sX4WTH0lBE1J3O00LfQMBbu9Sx2CYtc1KaxLlPPci1' },
             { id: 'standard', title: 'มาตรฐานผ้าตรานกยูง', icon: 'fas fa-shield-alt', k: 'AKfycbzJt9Kv0yKtgl5ThaXEaVck_1qulxa0u7mNUQuQKKm-xcxxCEbQyKLshwOMKMHDPQcm' },
-            { id: 'calc', title: 'ระบบวางแผนวงจรผลิต', icon: 'fas fa-calculator', k: 'AKfycby9I62m3ivrqnwPtE_zp6PCMxsFJKy6AMnfjznrN6cH9eoZS6uqZIYyaHt2edawqibx' },
-            { id: 'dye', title: 'ฐานข้อมูลพันธุ์ไม้ย้อมสี', icon: 'fas fa-leaf', k: 'AKfycbwpa8IKuqs-AGqwAOHdZXAPXYyprSTDdY2bVVQcBdBU7KtoVUp1aYIhN9MjOmOLzuMIxg' },
-            { id: 'smart-map', title: 'Seri Smart Map', icon: 'fas fa-map-location-dot', k: 'AKfycbzcbQbndTkJP_aeU3XmWhHpIDHrvmcAh1nrBrebenKo3oad_Lb9H0nfqfyWuXpJcciZ' } // <-- เพิ่มเมนูใหม่ตรงนี้
+            { id: 'calc', title: 'ระบบคำนวณการเก็บไข่ไหม', icon: 'fas fa-calculator', k: 'AKfycbxBNoxfPLno6IgBRjkFLgT-FzU24d3p7YPHJJxqr8G_S91qbGmlM-vlncMnREyGVcnRCQ' },
+            { id: 'dye', title: 'ฐานข้อมูลพันธุ์ไม้ย้อมสี', icon: 'fas fa-leaf', k: 'AKfycby42WYGfzn9C9gRVQVUS2o5t7J4M5xeVu-_US0dbPtAsgatnutKepVcPRxs08qV5Ino' },
+            { id: 'smart-map', title: 'Seri Smart Map', icon: 'fas fa-map-location-dot', k: 'AKfycbz3EQYvENC9Ipkr4Woje6xJWr6AxU9gBhZt097aDzDfpz9HG3X6Y_GzHE2njpYHlqzi' }
         ];
 
         function App() {
