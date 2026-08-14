@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SeriHub - แพลตฟอร์มบริหารจัดการและวิเคราะห์ข้อมูลหม่อนไหม</title>
+    <title>SeriHub - ระบบสารสนเทศด้านหม่อนไหม</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -100,10 +100,12 @@
     <script type="text/babel" data-presets="env,react">
         const { useState, useEffect } = React;
 
-        // 🛡️ เทคนิค URL Fragmentation (ฉีกส่วนประกอบลิงก์) เพื่อความปลอดภัย
+        // 🛡️ ซ่อนโครงสร้างลิงก์พื้นฐาน
         const _P1 = "ht" + "tps" + "://";
         const _P2 = "sc" + "ri" + "pt.go" + "og" + "le.com/mac" + "ros/s/";
         const _P3 = "/ex" + "ec";
+        
+        // ประกอบลิงก์
         const buildUrl = (k) => `${_P1}${_P2}${k}${_P3}`;
 
         const LOG_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxP4C_lcN2_uZ2iWBps0a6K22HY3XADVl8ADgvHr2cS9eNjBP9F2hgnr_8HHKmo-NxH-Q/exec';
@@ -116,7 +118,7 @@
             { id: 'production', title: 'สถิติการซื้อขายรังไหม', icon: 'fas fa-chart-line', k: 'AKfycbw65zi-Vet_CqObIyfHooyIh3sX4WTH0lBE1J3O00LfQMBbu9Sx2CYtc1KaxLlPPci1' },
             { id: 'standard', title: 'มาตรฐานผ้าตรานกยูง', icon: 'fas fa-shield-alt', k: 'AKfycbzJt9Kv0yKtgl5ThaXEaVck_1qulxa0u7mNUQuQKKm-xcxxCEbQyKLshwOMKMHDPQcm' },
             { id: 'calc', title: 'ระบบคำนวณการเก็บไข่ไหม', icon: 'fas fa-calculator', k: 'AKfycbxBNoxfPLno6IgBRjkFLgT-FzU24d3p7YPHJJxqr8G_S91qbGmlM-vlncMnREyGVcnRCQ' },
-            { id: 'dye', title: 'ฐานข้อมูลพันธุ์ไม้ย้อมสี', icon: 'fas fa-leaf', k: 'AKfycby42WYGfzn9C9gRVQVUS2o5t7J4M5xeVu-_US0dbPtAsgatnutKepVcPRxs08qV5Ino' },
+            { id: 'dye', title: 'ฐานข้อมูลพันธุ์ไม้ย้อมสี', icon: 'fas fa-leaf', k: 'AKfycbyk1Ukz8CHyyq851GSCKL8csnkh0nzpSRsBwikMdh33s2NAHE25AiYfBohjY8DQ7NGt4g' },
             { id: 'smart-map', title: 'Seri Smart Map', icon: 'fas fa-map-location-dot', k: 'AKfycbz3EQYvENC9Ipkr4Woje6xJWr6AxU9gBhZt097aDzDfpz9HG3X6Y_GzHE2njpYHlqzi' }
         ];
 
@@ -126,7 +128,7 @@
 
             const handleLoginSuccess = (user) => {
                 setCurrentUser(user);
-                setCurrentView('portal'); // เมื่อ Login ถูกต้อง จะตัดเข้าหน้า Dashboard ทันที
+                setCurrentView('portal'); 
             };
 
             const handleLogout = () => {
@@ -145,9 +147,6 @@
             );
         }
 
-        // ==========================================
-        // 1. หน้าแรก (Landing Page)
-        // ==========================================
         function LandingPage({ onLoginSuccess }) {
             const [isLoginOpen, setIsLoginOpen] = useState(false);
 
@@ -184,7 +183,7 @@
                                 </div>
 
                                 <h1 className="text-[6.5vw] sm:text-4xl md:text-5xl lg:text-[4.2rem] font-black text-slate-900 mb-4 tracking-tight whitespace-nowrap drop-shadow-sm">
-                                    ฐานข้อมูลเกษตรกร<span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-700 via-fuchsia-600 to-amber-500 px-1 sm:px-2">ด้านหม่อนไหม</span>
+                                    ระบบสารสนเทศ<span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-700 via-fuchsia-600 to-amber-500 px-1 sm:px-2">ด้านหม่อนไหม</span>
                                 </h1>
                                 
                                 <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-[3.2rem] font-extrabold text-slate-500 mb-10 block tracking-tight text-center">เพื่อการวางแผนและส่งเสริมเชิงรุก</h2>
@@ -304,9 +303,6 @@
             );
         }
 
-        // ==========================================
-        // 2. หน้า Dashboard Portal (ล็อคความสูง 100%)
-        // ==========================================
         function DashboardPortal({ currentUser, onLogout }) {
             const [activeDashboard, setActiveDashboard] = useState(DASHBOARDS[0]);
             const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -361,9 +357,7 @@
                                 <h2 className="text-lg sm:text-xl font-extrabold text-slate-800 tracking-tight flex items-center gap-2">{activeDashboard.title}</h2>
                             </div>
                             <div className="flex items-center gap-2">
-                                <a href={buildUrl(activeDashboard.k)} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-slate-50 hover:bg-slate-100 text-slate-500 hover:text-slate-800 px-3 py-1.5 rounded-md border border-slate-200 transition-all shadow-sm">
-                                    <i className="fas fa-external-link-alt text-xs"></i><span className="text-xs font-bold hidden sm:inline">เปิดเต็มจอ</span>
-                                </a>
+                                {/* ปุ่มเปิดเต็มจอถูกซ่อนไว้เพื่อความปลอดภัยของลิงก์ */}
                             </div>
                         </header>
 
